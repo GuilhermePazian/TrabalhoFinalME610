@@ -65,51 +65,55 @@ ME610}\\[5pt]
 ```{r echo=FALSE}
 #mudando o separador decimal para resultados "printados"
 options(OutDec= ",")
+
+#carregando funções
+source("funcoes.R")
 ```
 
 ```{r, echo=FALSE}
 #definindo opções padrões dos chunks
-knitr::opts_chunk$set(fig.width=6, fig.height=3.5, fig.align='center', echo=FALSE, warning=FALSE, message=FALSE)
+knitr::opts_chunk$set(fig.width=7, fig.height=3.5, fig.align='center', echo=FALSE, warning=FALSE, message=FALSE)
 ```
 
-1 Número do paciente
-2 Intensidade da dor nas costas:
+1 Número do paciente  
+2 Intensidade da dor nas costas:  
 "Nada"(0), "Nada que chegue a incomodar"(1),
-"Problemática, mas não forte (2)", "Forte"(3)
-3 Mês da gravidez onde a dor começou
-4 Idade da paciente em anos
-5 Altura da paciente em metros
-6 Peso da paciente no início da gravidez em quilogramas
-7 Peso no final da gravidez
-8 Peso do bebê em quilogramas
-9 Número de filhos anteriores à atual gravidez
-10 A paciente teve dor nas costas em gravidezes anteriores?
-"Não aplicável"(1), "Não"(2), "Sim, suave"(3), "Sim, forte"(4)
-11-18 Factores que aliviam a dor nas costas: "Não"(0), "Sim"(1)
-11 Comprimidos e aspirina
-12 Bolsa de agua quente
-13 Banho quente
-14 Almofada atrás da cadeira
-15 Ficar em pé
-16 Estar sentada
-17 Estar deitada
-18 Caminhar
-19-33 Fatores que agravam a dor: "Não"(0), "Sim"(1)
-19 Fadiga
-20 Inclinar-se
-21 Erguer-se
-22 Arrumar camas
-23 Lavar
-24 Passar roupa
-25 Uma ação intestinal
-26 Relações sexuais
-27 Tosser
-28 Espirrar
-29 Virar-se na cama
-30 Ficar em pé
-31 Estar sentada
-32 Estar deitada
-33 Caminhar
+"Problemática, mas não forte (2)", "Forte"(3)  
+3 Mês da gravidez onde a dor começou  
+4 Idade da paciente em anos  
+5 Altura da paciente em metros  
+6 Peso da paciente no início da gravidez em quilogramas  
+7 Peso no final da gravidez  
+8 Peso do bebê em quilogramas  
+9 Número de filhos anteriores à atual gravidez  
+10 A paciente teve dor nas costas em gravidezes anteriores?  
+"Não aplicável"(1), "Não"(2), "Sim, suave"(3), "Sim, forte"(4)  
+11-18 Factores que aliviam a dor nas costas: "Não"(0), "Sim"(1)  
+11 Comprimidos e aspirina  
+12 Bolsa de agua quente  
+13 Banho quente  
+14 Almofada atrás da cadeira  
+15 Ficar em pé  
+16 Estar sentada  
+17 Estar deitada  
+18 Caminhar  
+19-33 Fatores que agravam a dor: "Não"(0), "Sim"(1)  
+19 Fadiga  
+20 Inclinar-se  
+21 Erguer-se  
+22 Arrumar camas  
+23 Lavar  
+24 Passar roupa  
+25 Uma ação intestinal  
+26 Relações sexuais  
+27 Tosser  
+28 Espirrar  
+29 Virar-se na cama  
+30 Ficar em pé  
+31 Estar sentada  
+32 Estar deitada  
+33 Caminhar  
+
 ```{r,cache=TRUE}
 dados_base <- read.table(file = "dados-trab.txt")
 rotulos <- c("ID","Intensidade Dor","Mês da gravidez onde a dor começou","Idade da paciente","Altura da paciente (m)","Peso da paciente no início da gravidez (kg)","Peso no final da gravidez","Peso do bebê (kg)","Número de filhos anteriores à atual gravidez","A paciente teve dor nas costas em gravidezes anteriores?","Comprimidos e aspirina alivia a dor?","Bolsa de agua quente alivia a dor?","Banho quente alivia a dor?","Almofada atrás da cadeira alivia a dor?","Ficar em pé alivia a dor?","Estar sentada alivia a dor?","Estar deitada alivia a dor?","Caminhar alivia a dor?","Fadiga agrava a dor?","Inclinar-se agrava a dor?","Erguer-se agrava a dor?","Arrumar camas agrava a dor?","Lavar agrava a dor?","Passar roupa agrava a dor?","Uma ação intestinal agrava a dor?","Relações sexuais agrava a dor?","Tosser agrava a dor?","Espirrar agrava a dor?","Virar-se na cama agrava a dor?","Ficar em pé agrava a dor?","Estar sentada agrava a dor?","Estar deitada agrava a dor?","Caminhar agrava a dor?")
@@ -169,31 +173,125 @@ box_idade <- ggplot(data = dados,mapping = aes(x = `Intensidade Dor`, y=  `Idade
 box_idade
 ```
 ```{r}
+#anova para médias idade mãe pelos grupos de Intensidade de dor
+fit_idade <- lm(data = dados, `Idade da paciente`~`Intensidade Dor`)
+#anova(fit_idade)
+tbl_anova_idade <- tbl_anova_intens_dor(fit_idade)
+```
+`r tbl_anova_idade`
+
+```{r}
 box_altura <- ggplot(data = dados,mapping = aes(x = `Intensidade Dor`, y=  `Altura da paciente (m)`)) + geom_boxplot() + theme_light() + theme(axis.text.x = element_text(angle = 15,hjust = 1))
 box_altura
 ```
+
+```{r}
+#anova para médias Altura da mãe pelos grupos de Intensidade de dor
+fit_altura <- lm(data = dados, `Altura da paciente (m)`~`Intensidade Dor`)
+#anova(fit_altura)
+tbl_anova_altura <- tbl_anova_intens_dor(fit_altura)
+```
+`r tbl_anova_altura`
 
 ```{r}
 box_PesoAntes <- ggplot(data = dados,mapping = aes(x = `Intensidade Dor`, y=  `Peso da paciente no início da gravidez (kg)`)) + geom_boxplot() + theme_light() + theme(axis.text.x = element_text(angle = 15,hjust = 1))
 box_PesoAntes
 ```
 
+
+```{r}
+#anova para médias Peso da mãe antes pelos grupos de Intensidade de dor
+fit_PesoAntes <- lm(data = dados, `Peso da paciente no início da gravidez (kg)`~`Intensidade Dor`)
+#anova(fit_PesoAntes)
+tbl_anova_PesoAntes <- tbl_anova_intens_dor(fit_PesoAntes)
+```
+`r tbl_anova_PesoAntes`
+
 ```{r}
 box_PesoDepois <- ggplot(data = dados,mapping = aes(x = `Intensidade Dor`, y=  `Peso no final da gravidez`)) + geom_boxplot() + theme_light() + theme(axis.text.x = element_text(angle = 15,hjust = 1))
 box_PesoDepois
 ```
 
+```{r}
+#anova para médias Peso da mãe Depois pelos grupos de Intensidade de dor
+fit_PesoDepois <- lm(data = dados, `Peso no final da gravidez`~`Intensidade Dor`)
+#anova(fit_PesoDepois)
+tbl_anova_PesoDepois <- tbl_anova_intens_dor(fit_PesoDepois)
+```
+
+`r tbl_anova_PesoDepois`
 
 ```{r}
 box_PesoBebe <- ggplot(data = dados,mapping = aes(x = `Intensidade Dor`, y=  `Peso do bebê (kg)`)) + geom_boxplot() + theme_light() + theme(axis.text.x = element_text(angle = 15,hjust = 1))
 box_PesoBebe
 ```
+
+```{r}
+#anova para médias Peso da mãe Depois pelos grupos de Intensidade de dor
+fit_PesoBebe <- lm(data = dados, `Peso do bebê (kg)`~`Intensidade Dor`)
+#anova(fit_PesoBebe)
+tbl_anova_PesoBebe <- tbl_anova_intens_dor(fit_PesoBebe)
+```
+`r tbl_anova_PesoBebe`
+
+```{r}
+dados_Nada <- filter(dados, `Intensidade Dor` == "Nada")
+dados_Nadaqueincomode <- filter(dados, `Intensidade Dor` == "Nada que chegue a incomodar")
+dados_Problematica <- filter(dados, `Intensidade Dor` == "Problemática, mas não forte")
+dados_Forte <- filter(dados, `Intensidade Dor` == "Forte")
+```
+
+
+```{r}
+
+
+bar_mescomecou_nada <- ggplot(data = dados_Nada)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1))
+bar_mescomecou_Nadaqueincomode <- ggplot(data = dados_Nadaqueincomode)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1))
+bar_mescomecou_Problematica <- ggplot(data = dados_Problematica)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1))
+bar_mescomecou_Forte <- ggplot(data = dados_Forte)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1))
+
+
+library(gridExtra)
+library(grid)
+grid.arrange(bar_mescomecou_nada,bar_mescomecou_Nadaqueincomode,bar_mescomecou_Problematica,bar_mescomecou_Forte, ncol = 2)
+
+```
+
+```{r}
+
+
+bar_nfilhos_nada <- ggplot(data = dados_Nada)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Nº de filhos anteriores")
+bar_nfilhos_Nadaqueincomode <- ggplot(data = dados_Nadaqueincomode)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Nº de filhos anteriores")
+bar_nfilhos_Problematica <- ggplot(data = dados_Problematica)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Nº de filhos anteriores")
+bar_nfilhos_Forte <- ggplot(data = dados_Forte)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Nº de filhos anteriores")
+
+
+library(gridExtra)
+library(grid)
+grid.arrange(bar_nfilhos_nada,bar_nfilhos_Nadaqueincomode,bar_nfilhos_Problematica,bar_nfilhos_Forte, ncol = 2)
+
+```
+
+
+```{r}
+
+bar_doranterior_nada <- ggplot(data = dados_Nada)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `A paciente teve dor nas costas em gravidezes anteriores?`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Dor nas costas em gravidezes anteriores?")
+bar_doranterior_Nadaqueincomode <- ggplot(data = dados_Nadaqueincomode)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `A paciente teve dor nas costas em gravidezes anteriores?`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Dor nas costas em gravidezes anteriores?")
+bar_doranterior_Problematica <- ggplot(data = dados_Problematica)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `A paciente teve dor nas costas em gravidezes anteriores?`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Dor nas costas em gravidezes anteriores?")
+bar_doranterior_Forte <- ggplot(data = dados_Forte)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `A paciente teve dor nas costas em gravidezes anteriores?`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Dor nas costas em gravidezes anteriores?")
+
+
+library(gridExtra)
+library(grid)
+grid.arrange(bar_doranterior_nada,bar_doranterior_Nadaqueincomode,bar_doranterior_Problematica,bar_doranterior_Forte, ncol = 2)
+
+```
 #Análise exploratória
 
 Separando para cada intensidade de dor, Fazer gráficos do Tipo Histograma ou gráfico de barras para:  
-- Mês da gravidez onde a dor começou  
-- Números de filhos anteriores  
-- A paciente teve dor nas costas em gravidezes anteriores?  
+- Mês da gravidez onde a dor começou  OK  
+- Números de filhos anteriores  OK  
+- A paciente teve dor nas costas em gravidezes anteriores?  OK
 
 Fazer Boxplots para cada intensidade de dor para:  
 - Idade OK  
@@ -205,13 +303,52 @@ Fazer Boxplots para cada intensidade de dor para:
 Fazer uma tabela com (linhas) "intensidade da dor" x "proporção de fatores que afetam bem na dor"
 
 Fazer uma tabela com (linhas) "intensidade da dor" x "proporção de fatores que afetam mal na dor"
+
+
 ```{r}
+dados_Nada2 <- filter(dados_base, `Intensidade Dor` == 0)
+dados_Nadaqueincomode2 <- filter(dados_base, `Intensidade Dor` == 1)
+dados_Problematica2 <- filter(dados_base, `Intensidade Dor` == 2)
+dados_Forte2 <- filter(dados_base, `Intensidade Dor` == 3)
+```
+
+```{r}
+#tabelaproporcao <- function(dados){ apply(dados[,11:33], 2, function(x){Contagem = sum(x)
+#n = length(x)
+#prop = Contagem/n
+#return(c(Contagem,n,prop))})}
+nada <- tabelaproporcao(dados_Nada2)
+nada <- rbind(nada,rep("Nada",ncol(nada)))
+nadaqueincomode <- tabelaproporcao(dados_Nadaqueincomode2)
+nadaqueincomode <- rbind(nadaqueincomode,rep("nadaqueincomode",ncol(nadaqueincomode)))
+problematica <- tabelaproporcao(dados_Problematica2)
+problematica <- rbind(problematica,rep("problematica",ncol(problematica)))
+forte <- tabelaproporcao(dados_Forte2)
+forte <- rbind(forte,rep("forte",ncol(forte)))
+tbl_proporcao <- rbind(t(nada),t(nadaqueincomode),t(problematica),t(forte))
+colnames(tbl_proporcao) <- c("Nº de SIM","Total","Proporção de SIM","Intensidade da dor")
+tbl_proporcao <- cbind(rownames(tbl_proporcao),tbl_proporcao)
+tbl_proporcao[,4] <- as.double(tbl_proporcao[,4]) 
+```
+
+```{r}
+
+
+
+point_prop <- ggplot(data = tbl_proporcao, aes(y=tbl_proporcao[,3]))  + geom_point()
+point_prop
+```
+
+```{r}
+library(plyr)
 library(dplyr)
-aux <- sapply(names(dados_base[,11:33]),function(x){ddply(dados_base,~`Intensidade Dor`,summarise,Contagem = sum(`x`),n = length(`x`),prop = Contagem/n)})
+#aux <- sapply(names(dados_base[,11:33]),function(x){ddply(dados_base,~`Intensidade Dor`,summarise,Contagem = sum(`x`),n = length(`x`),prop = Contagem/n)})
 ```
 
 
 ```{r}
-a111 <- ddply(dados,~`Intensidade Dor`,summarise,Contagem = sum(dados_base[,11]),n = length(dados_base[,11]),prop = Contagem/n)
+#a111 <- ddply(dados_base,~`Intensidade Dor`,summarise,Contagem = sum(dados_base[,11]),n = length(dados_base[,11]),prop = Contagem/n)
+#a111
 ```
+
 

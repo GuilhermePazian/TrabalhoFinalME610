@@ -1,5 +1,4 @@
 tbl_anova_intens_dor <- function(fit_model,x = 4){
-  options(encoding="utf-8")
   anova <- anova(fit_model)
   anova <- cbind(c("Intesidade da Dor","Erro"),anova)
   row.names(anova) <- NULL

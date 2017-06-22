@@ -1,0 +1,55 @@
+---
+title: "testes latex"
+author: "Guilherme Pazian"
+date: "21 de junho de 2017"
+output: pdf_document
+---
+#tabela para coisas que  alivia a dor
+\begin{table}[ht]
+\centering
+\begin{tabular}{rcccccccc}
+  \hline
+ & Comprimidos & Bolsa de  & Banho  & Almofada atrás  & Ficar & Estar & Estar  & Caminhar \\ 
+ & e aspirina & agua quente & quente & da cadeira &  em pé &  sentada & deitada & \\
+  \hline
+Nada que incomode & 0,086 & 0,029 & 0,043 & 0,214 & 0,029 & 0,043 & 0,171 & 0,029 \\ 
+  Problemática & 0,109 & 0,073 & 0,109 & 0,509 & 0,091 & 0,200 & 0,345 & 0,018 \\ 
+  Forte & 0,400 & 0,120 & 0,160 & 0,400 & 0,040 & 0,120 & 0,200 & 0,080 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+#tabela para coisas que  agrava a dor
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{cccccccccccccccc}
+  \hline
+ & Fadiga  & Inclinar-se  & Erguer-se  & Arrumar   & Lavar  & Passar   & Uma ação   & Relações   & Tosser  & Espirrar  & Virar-se  & Ficar & sentada  &  deitada  & Caminhar  \\ 
+ &  & & & camas  &   & roupa  & intestinal  & sexuais  &   & Espirrar  & na cama  & em pé  & sentada  &  deitada  & Caminhar  \\ 
+  \hline
+Nada que incomode & 0,143 & 0,129 & 0,029 & 0,114 & 0,029 & 0,100 & 0,000 & 0,014 & 0,000 & 0,014 & 0,057 & 0,129 & 0,143 & 0,043 & 0,086 \\ 
+  Problemática & 0,309 & 0,200 & 0,218 & 0,345 & 0,091 & 0,345 & 0,018 & 0,000 & 0,036 & 0,018 & 0,055 & 0,418 & 0,164 & 0,109 & 0,127 \\ 
+  Forte & 0,400 & 0,280 & 0,240 & 0,200 & 0,200 & 0,280 & 0,000 & 0,040 & 0,040 & 0,000 & 0,080 & 0,440 & 0,280 & 0,160 & 0,320 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+
+
+#ordem crescente
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrrrr}
+  \hline
+ & Uma ação intestinal agrava a dor? & Espirrar agrava a dor? & Ficar em pé alivia a dor? & Relações sexuais agrava a dor? & Tosser agrava a dor? & Caminhar alivia a dor? & Virar-se na cama agrava a dor? & Bolsa de agua quente alivia a dor? \\ 
+  \hline
+Nada que incomode & 0,000 & 0,014 & 0,029 & 0,014 & 0,000 & 0,029 & 0,057 & 0,029 \\ 
+  Problemática & 0,018 & 0,018 & 0,091 & 0,000 & 0,036 & 0,018 & 0,055 & 0,073 \\ 
+  Forte & 0,000 & 0,000 & 0,040 & 0,040 & 0,040 & 0,080 & 0,080 & 0,120 \\ 
+   \hline
+\end{tabular}
+\captionof{table}{Tabela com as quantidades do número de infecções para os diferentes níveis de faixa etária.}
+\end{table}

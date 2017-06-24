@@ -267,15 +267,16 @@ dados_Forte <- filter(dados, `Intensidade Dor` == "Forte")
 
 ```{r }
 
+library(gridExtra)
+library(grid)
 
 bar_mescomecou_nada <- ggplot(data = dados_Nada)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1))
-bar_mescomecou_Nadaqueincomode <- ggplot(data = dados_Nadaqueincomode)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1))
+bar_mescomecou_Nadaqueincomode <- ggplot(data = dados_Nadaqueincomode)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Início da dor (Mês da gravidez)")
 bar_mescomecou_Problematica <- ggplot(data = dados_Problematica)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1))
 bar_mescomecou_Forte <- ggplot(data = dados_Forte)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1))
 
 
-library(gridExtra)
-library(grid)
+
 grid.arrange(bar_mescomecou_nada,bar_mescomecou_Nadaqueincomode,bar_mescomecou_Problematica,bar_mescomecou_Forte, ncol = 2)
 
 ```
@@ -283,14 +284,12 @@ grid.arrange(bar_mescomecou_nada,bar_mescomecou_Nadaqueincomode,bar_mescomecou_P
 ```{r }
 
 
-bar_nfilhos_nada <- ggplot(data = dados_Nada)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Nº de filhos anteriores")
-bar_nfilhos_Nadaqueincomode <- ggplot(data = dados_Nadaqueincomode)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Nº de filhos anteriores")
-bar_nfilhos_Problematica <- ggplot(data = dados_Problematica)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Nº de filhos anteriores")
-bar_nfilhos_Forte <- ggplot(data = dados_Forte)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,1)) + xlab("Nº de filhos anteriores")
+bar_nfilhos_nada <- ggplot(data = dados_Nada)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,.75)) + xlab("Nº de filhos anteriores")
+bar_nfilhos_Nadaqueincomode <- ggplot(data = dados_Nadaqueincomode)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,.75)) + xlab("Nº de filhos anteriores")
+bar_nfilhos_Problematica <- ggplot(data = dados_Problematica)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,.75)) + xlab("Nº de filhos anteriores")
+bar_nfilhos_Forte <- ggplot(data = dados_Forte)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Proporção de casos") + ylim(c(0,.75)) + xlab("Nº de filhos anteriores")
 
 
-library(gridExtra)
-library(grid)
 grid.arrange(bar_nfilhos_nada,bar_nfilhos_Nadaqueincomode,bar_nfilhos_Problematica,bar_nfilhos_Forte, ncol = 2)
 
 ```
@@ -421,12 +420,7 @@ rownames(tabela_proporcao_alivia) <- c("Ficar em pé","Caminhar","Bolsa de agua 
 
 ```
 
-```{r}
-library(reshape2)
-alivia <- melt(tabela_proporcao_alivia)
-colnames(alivia) <- c("Pergunta","Intensidade dor","Proporção de sim")
 
-```
 
 ```{r}
 tb_Forte_agrava <- apply(dados_Forte2[,19:33],2, proporcao)
@@ -449,6 +443,9 @@ colnames(tabela_proporcao_agrava) <- c("Nada que incomode","Problemática","Fort
 
 ```
 
+
+
+
 #Mapa de árvore
 
 [https://cran.r-project.org/web/packages/treemap/treemap.pdf](https://cran.r-project.org/web/packages/treemap/treemap.pdf)
@@ -459,8 +456,35 @@ Para encontrar as cores pallet
 ```{r}
 library(reshape2)
 agrava <- melt(tabela_proporcao_agrava)
+agrava <- cbind(agrava)
 colnames(agrava) <- c("Pergunta","Intensidade dor","Proporção de sim")
 
+```
+
+```{r}
+library(reshape2)
+alivia <- melt(tabela_proporcao_alivia)
+colnames(alivia) <- c("Pergunta","Intensidade dor","Proporção de sim")
+
+```
+
+
+```{r}
+proptotal_agrava <- apply(dados_base[,19:33],2,function(x){return(sum(x)/length(x))})
+proptotal_agrava <- proptotal_agrava[ordem_Forte_agrava]
+p <-  as.character(agrava[1:length(proptotal_agrava),1])
+proptotal_agrava <- data.frame(cbind(proptotal_agrava,1))
+proptotal_agrava[,2] <- p
+colnames(proptotal_agrava) <- c("Proporção Total de sim","Pergunta")
+
+
+proptotal_alivia <-  apply(dados_base[,11:18],2,function(x){return(sum(x)/length(x))})
+
+proptotal_alivia <- proptotal_alivia[ordem_Forte_alivia]
+p <- as.character(alivia[1:length(proptotal_alivia),1])
+proptotal_alivia <- data.frame(cbind(as.double(proptotal_alivia),1))
+proptotal_alivia[,2] <- p
+colnames(proptotal_alivia) <- c("Proporção Total de sim","Pergunta")
 ```
 
 
@@ -468,13 +492,21 @@ colnames(agrava) <- c("Pergunta","Intensidade dor","Proporção de sim")
 #mapa de arvore
 
 library(treemap)
-treemap(alivia, #Your data frame object
-        index=c("Pergunta"),  #A list of your categorical variables
-        vSize = "Proporção de sim",  #This is your quantitative variable
-        #type="index", #Type sets the organization and color scheme of your treemap
-        #vColor = 1,
-        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+#mapping = c(min(values), mean(range(values)), max(values))
+treemap(proptotal_alivia, #Your data frame object
+        index="Pergunta",  #A list of your categorical variables
+        vSize = "Proporção Total de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Proporção Total de sim",
+        #value = 1,
+        type= "value",#Type sets the organization and color scheme of your treemap
+        range = c(0,.35),
+        palette = gray.colors(8,start = 0.05,end = 1,gamma = .5),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
         #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 6,
         title="Mapa de Arvore para fatores que aliviam a dor em geral", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
@@ -482,27 +514,47 @@ treemap(alivia, #Your data frame object
 
 
 ```{r}
-treemap(agrava, #Your data frame object
-        index=c("Pergunta"),  #A list of your categorical variables
-        vSize = "Proporção de sim",  #This is your quantitative variable
-        type="index", #Type sets the organization and color scheme of your treemap
-        #vColor = "Intensidade dor",
-        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+treemap(proptotal_agrava, #Your data frame object
+        index="Pergunta",  #A list of your categorical variables
+        vSize = "Proporção Total de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Proporção Total de sim",
+        #value = 1,
+        type= "value",#Type sets the organization and color scheme of your treemap
+        range = c(0,.35),
+        palette = gray.colors(8,start = 0.05,end = 1,gamma = .5),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 6,
         title="Mapa de Arvore para fatores que agravam a dor em Geral", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
 ```
 
 ```{r fig.height= 6}
+
+#Colocar em anexo
+
 #mapa de arvore para cada nível de dor para alivia a dor
 
 library(treemap)
 treemap(alivia, #Your data frame object
         index=c("Intensidade dor","Pergunta"),  #A list of your categorical variables
         vSize = "Proporção de sim",  #This is your quantitative variable
-        type="index", #Type sets the organization and color scheme of your treemap
-        #vColor = "Intensidade dor",
-        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.55),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 8,
         title="Mapa de Arvore para fatores que aliviam a dor por nível de dor", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
@@ -516,9 +568,18 @@ alivia_nadaqueincomode <- filter(alivia, `Intensidade dor` == "Nada que incomode
 treemap(alivia_nadaqueincomode, #Your data frame object
         index=c("Pergunta"),  #A list of your categorical variables
         vSize = "Proporção de sim",  #This is your quantitative variable
-        type="index", #Type sets the organization and color scheme of your treemap
-        #vColor = "Intensidade dor",
-        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.25),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 8,
         title="Mapa de Arvore para fatores que aliviam a dor para nível de dor 'Nada que incomode'", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
@@ -532,9 +593,18 @@ alivia_problematica <- filter(alivia, `Intensidade dor` == "Problemática")
 treemap(alivia_problematica, #Your data frame object
         index=c("Pergunta"),  #A list of your categorical variables
         vSize = "Proporção de sim",  #This is your quantitative variable
-        type="index", #Type sets the organization and color scheme of your treemap
-        #vColor = "Intensidade dor",
-        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.55),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 8,
         title="Mapa de Arvore para fatores que aliviam a dor para nível de dor 'Problemática'", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
@@ -548,9 +618,18 @@ alivia_forte <- filter(alivia, `Intensidade dor` == "Forte")
 treemap(alivia_forte, #Your data frame object
         index=c("Pergunta"),  #A list of your categorical variables
         vSize = "Proporção de sim",  #This is your quantitative variable
-        type="index", #Type sets the organization and color scheme of your treemap
-        #vColor = "Intensidade dor",
-        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.45),
+        palette = gray.colors(8,start = 0.00,end = 1,gamma = 1),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 8,
         title="Mapa de Arvore para fatores que aliviam a dor para nível de dor 'Forte'", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
@@ -558,16 +637,25 @@ treemap(alivia_forte, #Your data frame object
 
 
 ```{r fig.height= 6}
+#colocar em anexos
 #mapa de arvore para cada nível de dor em agrava
 
 treemap(agrava, #Your data frame object
         index=c("Intensidade dor","Pergunta"),  #A list of your categorical variables
         vSize = "Proporção de sim",  #This is your quantitative variable
-        type="index", #Type sets the organization and color scheme of your treemap
-        
-        #vColor = "Intensidade dor",
-        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
-        title="Mapa de Arvore para fatores que aliviam a dor por nível de dor", #Customize your title
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.50),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 13,
+        title="Mapa de Arvore para fatores que agravam a dor por nível de dor", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
 ```
@@ -576,15 +664,25 @@ treemap(agrava, #Your data frame object
 
 ```{r }
 #mapa de arvore para cada nível de dor para agrava a dor nível nada que incomode
+library(dplyr)
 agrava_nadaqueincomode <- filter(agrava, `Intensidade dor` == "Nada que incomode")
 
 
 treemap(agrava_nadaqueincomode, #Your data frame object
         index=c("Pergunta"),  #A list of your categorical variables
         vSize = "Proporção de sim",  #This is your quantitative variable
-        type="index", #Type sets the organization and color scheme of your treemap
-        #vColor = "Intensidade dor",
-        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.15),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 13,
         title="Mapa de Arvore para fatores que agravam a dor para nível de dor 'Nada que incomode'", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
@@ -598,9 +696,18 @@ agrava_problematica <- filter(agrava, `Intensidade dor` == "Problemática")
 treemap(agrava_problematica, #Your data frame object
         index=c("Pergunta"),  #A list of your categorical variables
         vSize = "Proporção de sim",  #This is your quantitative variable
-        type="index", #Type sets the organization and color scheme of your treemap
-        #vColor = "Intensidade dor",
-        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.45),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 13,
         title="Mapa de Arvore para fatores que agravam a dor para nível de dor 'Problemática'", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
@@ -614,9 +721,18 @@ agrava_forte <- filter(agrava, `Intensidade dor` == "Forte")
 treemap(agrava_forte, #Your data frame object
         index=c("Pergunta"),  #A list of your categorical variables
         vSize = "Proporção de sim",  #This is your quantitative variable
-        type="index", #Type sets the organization and color scheme of your treemap
-        #vColor = "Intensidade dor",
-        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.45),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 13,
         title="Mapa de Arvore para fatores que agravam a dor para nível de dor 'Forte'", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
@@ -646,4 +762,11 @@ summary(fit_teste)
 fit_teste2 <- polr(`Intensidade Dor` ~ `Peso da paciente no início da gravidez (kg)`, data = dados, Hess = TRUE,method = "logistic")
 summary(fit_teste2)
 ```
+
+```{r}
+
+```
+
+
+
 

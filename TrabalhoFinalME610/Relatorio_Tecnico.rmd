@@ -411,6 +411,8 @@ tb_Nadaqueincomode_alivia <- tb_Nadaqueincomode_alivia[,ordem_Forte_alivia]
 
 tabela_proporcao_alivia <- cbind(tb_Nadaqueincomode_alivia[3,],tb_Problematica_alivia[3,], tb_Forte_alivia[3,])
 colnames(tabela_proporcao_alivia) <- c("Nada que incomode","Problemática","Forte")
+#só para tirar o (a) dos nomes
+rownames(tabela_proporcao_alivia) <- c("Ficar em pé","Caminhar","Bolsa de agua quente","Estar sentada","Banho quente","Estar deitada","Comprimidos e aspirina","Almofada atrás da cadeira")
 #xtable(tabela_proporcao[,1:8],digits = 3)
 #xtable(tabela_proporcao[,9:23],digits = 3)
 #View(tabela_proporcao)
@@ -423,6 +425,7 @@ colnames(tabela_proporcao_alivia) <- c("Nada que incomode","Problemática","Fort
 library(reshape2)
 alivia <- melt(tabela_proporcao_alivia)
 colnames(alivia) <- c("Pergunta","Intensidade dor","Proporção de sim")
+
 ```
 
 ```{r}
@@ -446,6 +449,12 @@ colnames(tabela_proporcao_agrava) <- c("Nada que incomode","Problemática","Fort
 
 ```
 
+#Mapa de árvore
+
+[https://cran.r-project.org/web/packages/treemap/treemap.pdf](https://cran.r-project.org/web/packages/treemap/treemap.pdf)
+
+Para encontrar as cores pallet
+[https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf)
 
 ```{r}
 library(reshape2)
@@ -462,11 +471,12 @@ library(treemap)
 treemap(alivia, #Your data frame object
         index=c("Pergunta"),  #A list of your categorical variables
         vSize = "Proporção de sim",  #This is your quantitative variable
-        type="index", #Type sets the organization and color scheme of your treemap
-        #vColor = "Intensidade dor",
-        palette = "Set3",  #Select your color palette from the RColorBrewer presets or make your own.
+        #type="index", #Type sets the organization and color scheme of your treemap
+        #vColor = 1,
+        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        #type = "value",
         title="Mapa de Arvore para fatores que aliviam a dor em geral", #Customize your title
-        fontsize.title = 14 #Change the font size of the title
+        fontsize.title = 12 #Change the font size of the title
         )
 ```
 
@@ -477,14 +487,14 @@ treemap(agrava, #Your data frame object
         vSize = "Proporção de sim",  #This is your quantitative variable
         type="index", #Type sets the organization and color scheme of your treemap
         #vColor = "Intensidade dor",
-        palette = "Set2",  #Select your color palette from the RColorBrewer presets or make your own.
+        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
         title="Mapa de Arvore para fatores que agravam a dor em Geral", #Customize your title
-        fontsize.title = 14 #Change the font size of the title
+        fontsize.title = 12 #Change the font size of the title
         )
 ```
 
-```{r}
-#mapa de arvore para cada nível de dor
+```{r fig.height= 6}
+#mapa de arvore para cada nível de dor para alivia a dor
 
 library(treemap)
 treemap(alivia, #Your data frame object
@@ -492,25 +502,148 @@ treemap(alivia, #Your data frame object
         vSize = "Proporção de sim",  #This is your quantitative variable
         type="index", #Type sets the organization and color scheme of your treemap
         #vColor = "Intensidade dor",
-        palette = "Set1",  #Select your color palette from the RColorBrewer presets or make your own.
+        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
         title="Mapa de Arvore para fatores que aliviam a dor por nível de dor", #Customize your title
-        fontsize.title = 14 #Change the font size of the title
+        fontsize.title = 12 #Change the font size of the title
+        )
+```
+
+```{r }
+#mapa de arvore para cada nível de dor para alivia a dor nível nada que incomode
+alivia_nadaqueincomode <- filter(alivia, `Intensidade dor` == "Nada que incomode")
+
+
+treemap(alivia_nadaqueincomode, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        type="index", #Type sets the organization and color scheme of your treemap
+        #vColor = "Intensidade dor",
+        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        title="Mapa de Arvore para fatores que aliviam a dor para nível de dor 'Nada que incomode'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+```
+
+```{r }
+#mapa de arvore para cada nível de dor para alivia a dor nível 'Problemática'
+alivia_problematica <- filter(alivia, `Intensidade dor` == "Problemática")
+
+
+treemap(alivia_problematica, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        type="index", #Type sets the organization and color scheme of your treemap
+        #vColor = "Intensidade dor",
+        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        title="Mapa de Arvore para fatores que aliviam a dor para nível de dor 'Problemática'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+```
+
+```{r }
+#mapa de arvore para cada nível de dor para alivia a dor nível 'Forte'
+alivia_forte <- filter(alivia, `Intensidade dor` == "Forte")
+
+
+treemap(alivia_forte, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        type="index", #Type sets the organization and color scheme of your treemap
+        #vColor = "Intensidade dor",
+        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        title="Mapa de Arvore para fatores que aliviam a dor para nível de dor 'Forte'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
         )
 ```
 
 
-```{r}
-#mapa de arvore para cada nível de dor
+```{r fig.height= 6}
+#mapa de arvore para cada nível de dor em agrava
 
-library(treemap)
 treemap(agrava, #Your data frame object
         index=c("Intensidade dor","Pergunta"),  #A list of your categorical variables
         vSize = "Proporção de sim",  #This is your quantitative variable
         type="index", #Type sets the organization and color scheme of your treemap
         
         #vColor = "Intensidade dor",
-        palette = "Set1",  #Select your color palette from the RColorBrewer presets or make your own.
+        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
         title="Mapa de Arvore para fatores que aliviam a dor por nível de dor", #Customize your title
-        fontsize.title = 14 #Change the font size of the title
+        fontsize.title = 12 #Change the font size of the title
         )
 ```
+
+
+
+```{r }
+#mapa de arvore para cada nível de dor para agrava a dor nível nada que incomode
+agrava_nadaqueincomode <- filter(agrava, `Intensidade dor` == "Nada que incomode")
+
+
+treemap(agrava_nadaqueincomode, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        type="index", #Type sets the organization and color scheme of your treemap
+        #vColor = "Intensidade dor",
+        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        title="Mapa de Arvore para fatores que agravam a dor para nível de dor 'Nada que incomode'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+```
+
+```{r }
+#mapa de arvore para cada nível de dor para agrava a dor nível 'Problemática'
+agrava_problematica <- filter(agrava, `Intensidade dor` == "Problemática")
+
+
+treemap(agrava_problematica, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        type="index", #Type sets the organization and color scheme of your treemap
+        #vColor = "Intensidade dor",
+        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        title="Mapa de Arvore para fatores que agravam a dor para nível de dor 'Problemática'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+```
+
+```{r }
+#mapa de arvore para cada nível de dor para agrava a dor nível 'Forte'
+agrava_forte <- filter(agrava, `Intensidade dor` == "Forte")
+
+
+treemap(agrava_forte, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        type="index", #Type sets the organization and color scheme of your treemap
+        #vColor = "Intensidade dor",
+        palette = "Greys",  #Select your color palette from the RColorBrewer presets or make your own.
+        title="Mapa de Arvore para fatores que agravam a dor para nível de dor 'Forte'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+```
+
+
+##Modelo
+
+```{r}
+library(foreign)
+library(ggplot2)
+library(MASS)
+library(Hmisc)
+library(reshape2)
+fit_crazy <- polr(`Intensidade Dor` ~ `Mês da gravidez onde a dor começou` + `Idade da paciente` + `Altura da paciente (m)` + `Peso da paciente no início da gravidez (kg)` + `Peso no final da gravidez` + `Peso do bebê (kg)` + `Número de filhos anteriores à atual gravidez` + `A paciente teve dor nas costas em gravidezes anteriores?`, data = dados, Hess=TRUE)
+summary(fit_crazy)
+```
+
+```{r}
+#teste para interpretações
+fit_teste <- polr(`Intensidade Dor` ~ `Peso da paciente no início da gravidez (kg)`, data = dados, Hess = TRUE)
+summary(fit_teste)
+
+
+#é o mesmo que não colocar
+
+fit_teste2 <- polr(`Intensidade Dor` ~ `Peso da paciente no início da gravidez (kg)`, data = dados, Hess = TRUE,method = "logistic")
+summary(fit_teste2)
+```
+

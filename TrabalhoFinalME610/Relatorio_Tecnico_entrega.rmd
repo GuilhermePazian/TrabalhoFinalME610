@@ -1,6 +1,6 @@
 ---
 title: ""
-geometry: textwidth=18cm,textheight=24cm
+geometry:  a4paper,left=3cm,right=2cm,top=3cm, bottom= 2cm
 lang: pt-br
 header-includes:
 - \usepackage{setspace}
@@ -13,12 +13,13 @@ header-includes:
 - \usepackage{multicol}
 - \usepackage{float}
 - \usepackage{subcaption}
+- \usepackage{multirow}
 output:
   pdf_document:
   html_document: default
   fig_caption: yes
   mainfont: Times New Roman
-fontsize: 10bp
+fontsize: 11bp
 ---
 
 \begin{titlepage}
@@ -61,7 +62,10 @@ ME610}\\[5pt]
 \end{center}
 \end{titlepage}
 
-\doublespacing
+
+\setlength{\parindent}{3em}
+\setlength{\parskip}{1em}
+\onehalfspacing
 \newpage
 
 ```{r global options, echo=FALSE}
@@ -84,6 +88,7 @@ library(grid) #multiplos gráficos ggplot2
 library(plyr) #utilizar apply
 library(dplyr) ##utilizar apply
 library(reshape2) #utilizar a função melt
+library(treemap) #graficos tipo treemap
 ```
 
 ```{r reading the data,cache=TRUE}
@@ -96,10 +101,29 @@ colnames(dados_base) <- rotulos
 
 #1.Introdução
 
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+  
+Este trabalho está todo baseado nas informações obtidas pela investigação feita por Mantle, Greenwood e Currey, (1977) referente à dor nas costas durante a gravidez de 180 mulheres, cada mulher respondeu quanto às seguintes informações: Intensidade da dor nas costas (respostas alternativas: "Nada","Nada que chegue a incomodar","Problemática, mas não forte" ou "Forte"), Mês da gravidez onde a dor começou, Idade (em anos), Altura (em metros), Peso no início da gravidez (em kg), Peso no final da gravidez (em kg), Peso do bebê (em kg), Número de filhos anteriores à atual gravidez, Se teve dor nas costas em gravidezes anteriores? (respostas alternativas: Não aplicável, "Não", "Sim, suave" ou "Sim, forte"), Respostas dicotômicas ("Sim" ou "Não") para fatores que possivelmente aliviam a dor nas costas ("Comprimidos e aspirina","Bolsa de agua quente","Banho quente","Almofada atrás da cadeira","Ficar em pé","Estar sentada","Estar deitada","Caminhar") e para fatores que possivelmente agravam a dor nas costas ("Fadiga","Inclinar-se","Erguer-se","Arrumar camas","Lavar","Passar roupa","Uma ação intestinal","Relações sexuais","Tosser","Espirrar","Virar-se na cama","Ficar em pé","Estar sentada","Estar deitada","Caminhar").   
+
+O objetivo deste estudo é analisar os resultados do estudo citado, de maneira a resumir as informções presentes no estudo e identificar associações entre a intensidade da dor nas costas e as demais variáveis.  
+
+A estrutura deste estudo segue da seguinte forma: 2.Validação dos dados, onde existe uma breve descrição de inconsistências encontradas na base de dados; 3.Análise Descritiva, que contém representações gráficas juntamente com suas respectivas legendas contendo algumas observações quanto às informações prestadas pela representação gráfica; Esta seção é dividida por tipos de gráfico apresentados; 4.Discussões, que contém as discussões quanto ao objetivo do estudo, de maneira a contextualizar as observações feitas na seção de Análise Descritiva;5.Referências, onde constam as referências do presente estudo e 6.Anexos que contém algumas tabelas e representações gráficas adicionais ao estudo.  
 
 #2.Validação do banco de dados
 
-Após uma analise prévia do banco de dados, observou-se uma inconsistência na base de dados, já que foi observada uma valor "0" para a variável relacionada à dor nas costas em gravidezes anteriores e este valor não têm nenhuma definição na descrição desta variável, portanto as observações com esta característica foram retiradas do banco de dados.
+Após uma analise prévia do banco de dados, observou-se uma inconsistência na base de dados, já que foi observado um valor para a variável relacionada à dor nas costas em gravidezes anteriores que não têm definição na descrição desta variável, portanto as observações com esta característica foram retiradas do banco de dados.
 
 
 ```{r insconsistencias}
@@ -124,8 +148,24 @@ dados$`A paciente teve dor nas costas em gravidezes anteriores?` <- ordered(dado
 dados[,11:33] <- apply(dados[,11:33],2,function(x){factor(x,levels = c(0,1),labels = c("Não","Sim"))})
 
 ```
-
+\newpage
 #3.Análise Descritiva
+
+
+BREVE DESCRIÇÃO O TIPO DE GRÁFICO PARA CADA VARIÁVEL E UMA TABELA COM A QUANTIDADE DE OBSERVAÇÕES PARA CADA GRUPO DE INTENSIDADE DE DOR NAS COSTAS.
+BREVE DESCRIÇÃO  
+BREVE DESCRIÇÃO  
+BREVE DESCRIÇÃO  
+BREVE DESCRIÇÃO  
+BREVE DESCRIÇÃO  
+BREVE DESCRIÇÃO  
+  
+TABELA  
+TABELA   
+TABELA  
+TABELA  
+TABELA  
+TABELA  
 
 ##3.1.Boxplots
 
@@ -177,8 +217,6 @@ bar_mescomecou_Forte <- ggplot(data = dados_Forte)  + facet_wrap(~`Intensidade D
 
 bar_mescomecou <- grid.arrange(bar_mescomecou_Nadaqueincomode,bar_mescomecou_Problematica,bar_mescomecou_Forte, ncol = 3)
 
-bar_mescomecou  
-
 legenda_bar_mescomecou <- "Gráfico de barras para mês da gravidez que começou a dor nas costas por grupo de intensidade de dor nas costas durante a gravidez. O eixo y representa a proporção de casos de dor que se iniciaram nos grupos (mêses de gravidez) do eixo x em relação ao total de casos de cada grupo de intensidade de dor. Note que os gráficos têm comportamento bem diferente. Para o grupo de dor 'Nada que chegue a incomodar', predominantemente a dor se inicia  no mês inicial (0) e após esse mês a proporção de casos têm um crescimento conforme se avança nos meses da gravidez. Para o grupo de intensidade de do 'Problemática, mas não forte' se observa uma mesma proporção de casos nos três primeiros meses, depois um crescimento até o pico no sexto mês de gravidez, quando a proporção começa a decrescer. Para o grupo de intensidade de dor 'Forte' se observa uma maior distribuição dos casos pelos meses de gravidez, apresentando maior proporção no mês 3 e menores proporções nos meses 4,5 e 9. OBS: o gráfico para o grupo de intensidade de dor 'Nada' não foi apresentado já que não apresentou dor."
 ```
 
@@ -205,13 +243,17 @@ bar_doranterior_Problematica <- ggplot(data = dados_Problematica)  + facet_wrap(
 bar_doranterior_Forte <- ggplot(data = dados_Forte)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `A paciente teve dor nas costas em gravidezes anteriores?`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Prop. de casos") + ylim(c(0,.8)) + xlab("Dor nas costas em gravidezes anteriores?")
 
 bar_doranterior <-grid.arrange(bar_doranterior_nada,bar_doranterior_Nadaqueincomode,bar_doranterior_Problematica,bar_doranterior_Forte, ncol = 2)
-bar_doranterior
+
 legenda_bar_doranterior <- "Gráfico de barras para dor em gravidezes anteriores por grupo de intensidade de dor nas costas durante a gravidez. O eixo y representa a proporção de pacientes dos grupos (dor em gravidezes anteriores) do eixo x em relação ao total de casos de cada grupo de intensidade de dor. Note que o comportamento dos gráficos de barra são bem diferentes entre os grupos de intensidade de dor. Para o grupo 'Nada' observamos que não existe nenhum caso de dor em gravidez anterior, para o grupo 'Nada que chegue a incomodar' a maioria das observações são observadas na classificação 'Não aplicável' e nos demois grupos existe uma relação decrescente se levarmos em consideração a sequência de classificações 'Não','Sim, suave' e 'Sim, forte', no grupo 'Problemática, mas não forte' se observa grande proporção de casos em 'não aplicável' e um comportamento similar ao grupo anterior quanto às demais classificações. Já o grupo 'Forte' apresenta proporções bem próximas para as classificações 'Não aplivável', 'Não' e 'Sim, suave' e menor proporção para a classificação 'Sim, forte'."
 
 ```
 
 
 ##3.3.Mapas de árvore
+
+COLOCAR UMA DESCRIÇÃO DA REPRESENTAÇÃO GERAL DE MAPA DE ÁRVORE E RETIRAR ESSA DESCRIÇÃO DAS LEGENDAS  
+
+As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator alivia a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator alivia a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores.  
 
 ```{r preparacao dos dados para calcular proporcoes}
 #novos rotulos para não ficar duas linhas com o mesmo nome
@@ -290,7 +332,6 @@ colnames(proptotal_alivia) <- c("Proporção Total de sim","Pergunta")
 ```{r fig.cap = legenda_treemap_proptotal_alivia, fig.width = 10,fig.asp=1.618/5}
 #mapa de arvore
 
-library(treemap)
 #mapping = c(min(values), mean(range(values)), max(values))
 treemap_proptotal_alivia <- treemap(proptotal_alivia, #Your data frame object
         index="Pergunta",  #A list of your categorical variables
@@ -495,4 +536,76 @@ treemap(agrava_forte, #Your data frame object
         fontsize.title = 12 #Change the font size of the title
         )
 legenda_treemap_agrava_forte <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes para pacientes do grupo de intensidade de dor 'Forte'. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator agrava a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator agrava a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores 'Estar sentada', 'Ficar em pé', 'Uma ação intestinal','caminhar','Espirrar' e 'Estar deitada' ocupam a maior parte da área do gráfico, ou seja, a soma das proporções destes é maior do que a soma dos demais fatores que avaliados quanto a redução da dor nas costas para pacientes do grupo de intensidade de dor 'Forte'."
+```
+
+\newpage
+#4.Discussões
+
+
+
+
+\newpage
+#5.Referências
+
+\newpage
+#6.Anexos
+
+COLOCAR UMA TABELA COM AS PROPORÇÕES, E CONTAGENS DE RESPOSTAS "SIM" PARA OS FATORES QUE AGRAVA E OUTRA PARA ALIVIA, PARA O TOTAL GERAL E TOTAL SEPARADO POR GRUPO DE INTENSIDADE DE DOR.  
+
+TABELAS DO TIPO "SUMMARY" PARA AS DEMAIS VARIÁVEIS, TANTO GERAL QUANTO POR GRUPO DE INTENSIDADE DE DOR.   
+
+```{r fig.cap = legenda_treemap_alivia_geral,fig.width = 10,fig.asp=1.618/1.2}
+
+#Colocar em anexo
+
+#mapa de arvore para cada nível de dor para alivia a dor
+
+
+treemap(alivia, #Your data frame object
+        index=c("Intensidade dor","Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Intensidade dor",
+        #value = 1,
+        #type = "value",
+        type= "categorical",#Type sets the organization and color scheme of your treemap
+        #range = c(0,.55),
+        palette = gray.colors(3,start = 0.7,end = 1,gamma = 25),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        #n = 8,
+        position.legend = "bottom",
+        title="Mapa de Arvore para fatores que aliviam a dor por nível de dor", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+legenda_treemap_alivia_geral <- "Legende"
+```
+
+```{r fig.cap = legenda_treemap_agrava_geral,fig.width = 10,fig.asp=1.618/1.2}
+#colocar em anexos
+#mapa de arvore para cada nível de dor em agrava
+
+treemap(agrava, #Your data frame object
+        index=c("Intensidade dor","Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Intensidade dor",
+        #value = 1,
+        #type = "value",
+        type= "categorical",#Type sets the organization and color scheme of your treemap
+        #range = c(0,.50),
+        palette = gray.colors(3,start = 0.7,end = 1,gamma = 50),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        #n = 13,
+        position.legend = "bottom",
+        title="Mapa de Arvore para fatores que agravam a dor por nível de dor", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+
+legenda_treemap_agrava_geral <- "Legende"
 ```

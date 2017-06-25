@@ -453,6 +453,18 @@ colnames(tabela_proporcao_agrava) <- c("Nada que incomode","Problemática","Fort
 Para encontrar as cores pallet
 [https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf)
 
+
+outras
+[http://unixlab.sfsu.edu/~trogu/523/02_2013_fall/demo/treemap_key/treemap_legend_key_step-by-step.pdf](http://unixlab.sfsu.edu/~trogu/523/02_2013_fall/demo/treemap_key/treemap_legend_key_step-by-step.pdf)
+
+[https://www.rdocumentation.org/packages/treemap/versions/2.4-2/topics/treemap](https://www.rdocumentation.org/packages/treemap/versions/2.4-2/topics/treemap)
+
+[http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
+
+[https://cran.r-project.org/web/packages/treemap/treemap.pdf](https://cran.r-project.org/web/packages/treemap/treemap.pdf)
+
+[https://cran.r-project.org/web/packages/treemap/vignettes/treemap-color_mapping.html](https://cran.r-project.org/web/packages/treemap/vignettes/treemap-color_mapping.html)
+
 ```{r}
 library(reshape2)
 agrava <- melt(tabela_proporcao_agrava)
@@ -766,7 +778,7 @@ summary(fit_teste2)
 ```{r}
 
 ```
-
+[https://github.com/baptiste/gridextra/wiki/tableGrob](https://github.com/baptiste/gridextra/wiki/tableGrob)
 
 
 

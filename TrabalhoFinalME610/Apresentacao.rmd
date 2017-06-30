@@ -1,0 +1,544 @@
+---
+title: "Dor nas costas durante a gravidez"
+author: "Guilherme Pazian"
+date: "30 de junho de 2017"
+header-includes:
+- \usepackage{setspace}
+- \usepackage{indentfirst}
+- \usepackage[utf8]{inputenc}
+- \usepackage{mathptmx}
+- \usepackage{enumerate}
+- \usepackage{url} 
+- \usepackage{lipsum}
+- \usepackage{multicol}
+- \usepackage{float}
+- \usepackage{subcaption}
+- \usepackage{multirow}
+- \usepackage{booktabs}
+- \usepackage{longtable}
+- \usetheme{CambridgeUS}
+- \usecolortheme{spruce}
+- \usefonttheme{structurebold}
+- \usepackage{graphicx,url}
+- \usepackage[normalem]{ulem}
+output: beamer_presentation
+---
+```{r global options, echo=FALSE}
+#definindo opções padrões dos chunks
+#fig.width = 4.5
+#fig.asp=1.618/2
+knitr::opts_chunk$set(fig.align='center',fig.path='Figs/', fig.pos="H", echo=FALSE, warning=FALSE, message=FALSE)
+#mudando o separador decimal para resultados "printados"
+options(OutDec= ",")
+```
+
+```{r pacotes e funcoes,echo=FALSE}
+#carregando funções
+source("funcoes.R")
+
+#pacotes
+library(ggplot2)
+library(gridExtra) #multiplos gráficos ggplot2
+library(grid) #multiplos gráficos ggplot2
+library(plyr) #utilizar apply
+library(dplyr) ##utilizar apply
+library(reshape2) #utilizar a função melt
+library(treemap) #graficos tipo treemap
+library(xtable) #usar a função para gerar tabelas latex
+```
+
+```{r reading the data,cache=TRUE}
+dados_base <- read.table(file = "dados-trab.txt")
+rotulos <- c("ID","Intensidade Dor","Mês da gravidez onde a dor começou","Idade da paciente","Altura da paciente (m)","Peso da paciente no início da gravidez (kg)","Peso no final da gravidez","Peso do bebê (kg)","Número de filhos anteriores à atual gravidez","A paciente teve dor nas costas em gravidezes anteriores?","Comprimidos e aspirina alivia a dor?","Bolsa de agua quente alivia a dor?","Banho quente alivia a dor?","Almofada atrás da cadeira alivia a dor?","Ficar em pé alivia a dor?","Estar sentada alivia a dor?","Estar deitada alivia a dor?","Caminhar alivia a dor?","Fadiga agrava a dor?","Inclinar-se agrava a dor?","Erguer-se agrava a dor?","Arrumar camas agrava a dor?","Lavar agrava a dor?","Passar roupa agrava a dor?","Uma ação intestinal agrava a dor?","Relações sexuais agrava a dor?","Tosser agrava a dor?","Espirrar agrava a dor?","Virar-se na cama agrava a dor?","Ficar em pé agrava a dor?","Estar sentada agrava a dor?","Estar deitada agrava a dor?","Caminhar agrava a dor?")
+colnames(dados_base) <- rotulos
+
+```
+
+#Sumário
+
+- 1.Gravidez;
+- 2.Dores nas costas;
+- 3.Banco de dados;
+- 4.Validação do banco de dados;
+- 5.Análise descritiva;
+- 6.Conclusão;
+- 7.Referências;
+
+
+# 1.Gravidez
+
+- Mudanças físicas e hormonais;
+
+- Aumento de peso; 
+
+- Mudança do ponto de gravidade;
+
+- Ação dos hormônios que provocam uma frouxidão dos ligamentos musculares;
+
+- Mudança na postura da mulher.
+  
+# 2.Dores nas costas
+
+- 50% das mulheres grávidas sofrem com dores nas costas;
+
+- 1/3 sofre com dores severas;
+
+- Propor métodos eficazes e
+simples para combater/amenizar as dores;
+
+- Medicamentos podem influênciar na saúde e no desenvolvimento do feto. 
+
+# 3.Banco de dados
+  
+- Investigação feita por Mantle, Greenwood e Currey, (1977);
+
+- 180 mulheres;
+
+- Intensidade da dor nas costas:
+
+"Nada","Nada que chegue a incomodar","Problemática, mas não forte" ou "Forte";
+
+- Identificar associações entre a intensidade da dor nas costas e as demais variáveis.  
+
+
+```{r insconsistencias}
+#tirando inconsistências
+dados_base <- filter(dados_base, `A paciente teve dor nas costas em gravidezes anteriores?` != 0)
+```
+
+# 4.Validação do banco de dados
+
+- Foi observado um valor para a variável relacionada à dor nas costas em gravidezes anteriores que não têm definição na descrição desta variável;
+
+
+- Restando assim `r nrow(dados_base)` observações no banco de dados.
+
+
+```{r inteiro em fator}
+#fator
+
+dados <- dados_base
+dados$`Intensidade Dor`<- ordered(dados$`Intensidade Dor`, levels = c(0,1,2,3),labels = c("Nada","Não incomoda",
+"Problemática", "Forte"))
+
+dados$`Mês da gravidez onde a dor começou` <- ordered(dados$`Mês da gravidez onde a dor começou`)
+
+dados$`Número de filhos anteriores à atual gravidez` <- ordered(dados$`Número de filhos anteriores à atual gravidez`)
+
+dados$`A paciente teve dor nas costas em gravidezes anteriores?` <- ordered(dados$`A paciente teve dor nas costas em gravidezes anteriores?`,levels = c(1,2,3,4), labels = c("Não aplicável","Não","Sim, suave","Sim, forte"))
+
+dados[,11:33] <- apply(dados[,11:33],2,function(x){factor(x,levels = c(0,1),labels = c("Não","Sim"))})
+
+```
+
+```{r Preparacao dos dados para bar_plot}
+dados_Nada <- filter(dados, `Intensidade Dor` == "Nada")
+dados_Nadaqueincomode <- filter(dados, `Intensidade Dor` == "Não incomoda")
+dados_Problematica <- filter(dados, `Intensidade Dor` == "Problemática")
+dados_Forte <- filter(dados, `Intensidade Dor` == "Forte")
+
+```
+
+```{r tabela1}
+freq <- c(nrow(dados_Nada),nrow(dados_Nadaqueincomode),nrow(dados_Problematica),nrow(dados_Forte))
+names(freq) <- c("Nada","Não incomoda",
+"Problemática", "Forte")
+#freq
+```
+
+
+# 5.Análise descritiva
+
+\begin{table}[H]
+\centering
+\caption{Tabela de frequências por grupo de intensidade de dor.}
+\label{my-label}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+           & \multirow{2}{*}{Nada} & \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Nada que chegue\\ a Incomodar\end{tabular}} & \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Problemática,\\ mas não forte\end{tabular}} & \multirow{2}{*}{Forte} \\
+           &                       &                                                                                        &                                                                                        &                        \\ \cmidrule(l){2-5} 
+Frequência & 4                     & 70                                                                                     & 55                                                                                     & 25                     \\ \bottomrule
+\end{tabular}
+\end{table}  
+
+#5.Idade
+
+
+```{r box_idade, fig.width = 4.5,fig.asp=1.618/2.5}
+box_idade <- ggplot(data = dados,mapping = aes(x = `Intensidade Dor`, y=  `Idade da paciente`)) + geom_boxplot()  + theme_light() + theme(axis.text.x = element_text(angle = 15,hjust = 1,size = 10))
+box_idade
+```
+
+# 5.Altura
+```{r box_altura,fig.width = 4.5,fig.asp=1.618/2.5}
+box_altura <- ggplot(data = dados,mapping = aes(x = `Intensidade Dor`, y=  `Altura da paciente (m)`)) + geom_boxplot() + theme_light() + theme(axis.text.x = element_text(angle = 15,hjust = 1,size = 10))
+box_altura
+```
+
+# 5.Peso no fim da gravidez
+
+```{r fig.width = 4.5,fig.asp=1.618/2.5}
+box_PesoDepois <- ggplot(data = dados,mapping = aes(x = `Intensidade Dor`, y=  `Peso no final da gravidez`)) + geom_boxplot() + theme_light() + theme(axis.text.x = element_text(angle = 15,hjust = 1)) + ylab("Peso fim da gravidez (kg)")
+box_PesoDepois
+```
+
+# 5.Mês da gravidez que a a dor começou
+
+```{r fig.width = 4.5,fig.asp=1.618/2.5}
+bar_mescomecou_nada <- ggplot(data = dados_Nada)   + facet_wrap(~`Intensidade Dor` , nrow = 2) +  geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,1)) + xlab("")
+bar_mescomecou_Nadaqueincomode <- ggplot(data = dados_Nadaqueincomode) + facet_wrap(~`Intensidade Dor` , nrow = 2) +  geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,.6)) + xlab("")
+bar_mescomecou_Problematica <- ggplot(data = dados_Problematica)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,.6)) + xlab("")
+bar_mescomecou_Forte <- ggplot(data = dados_Forte)  + facet_wrap(~`Intensidade Dor` , nrow = 2) +  geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,.6)) + xlab("")
+
+#bar_mescomecou_nada são todos os mesmos valores, por isso não entro esse grafico no trabalho.
+
+bar_mescomecou <- grid.arrange(bar_mescomecou_Nadaqueincomode,bar_mescomecou_Problematica,bar_mescomecou_Forte, ncol = 3)
+```
+
+# 5.Número de filhos anteriores
+
+```{r fig.width = 4.5,fig.asp=1.618/2.5}
+
+
+bar_nfilhos_nada <- ggplot(data = dados_Nada)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,.75)) + xlab("")
+bar_nfilhos_Nadaqueincomode <- ggplot(data = dados_Nadaqueincomode)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,.75))  + xlab("")
+bar_nfilhos_Problematica <- ggplot(data = dados_Problematica)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,.75)) + xlab("")
+bar_nfilhos_Forte <- ggplot(data = dados_Forte)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `Número de filhos anteriores à atual gravidez`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,.75)) + xlab("")
+
+
+bar_nfilhos <- grid.arrange(bar_nfilhos_nada,bar_nfilhos_Nadaqueincomode,bar_nfilhos_Problematica,bar_nfilhos_Forte, ncol = 2)
+```
+
+
+# 5.Dor em gravidezes anteriores?
+
+```{r fig.width = 4.5,fig.asp=1.618/2.5}
+
+bar_doranterior_nada <- ggplot(data = dados_Nada)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `A paciente teve dor nas costas em gravidezes anteriores?`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,.8))  + xlab("") + theme(axis.text.x = element_text(angle = 15,hjust = 1))
+bar_doranterior_Nadaqueincomode <- ggplot(data = dados_Nadaqueincomode)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `A paciente teve dor nas costas em gravidezes anteriores?`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,.8))  + xlab("") + theme(axis.text.x = element_text(angle = 15,hjust = 1))
+bar_doranterior_Problematica <- ggplot(data = dados_Problematica)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `A paciente teve dor nas costas em gravidezes anteriores?`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,.8))  + xlab("") + theme(axis.text.x = element_text(angle = 15,hjust = 1))
+bar_doranterior_Forte <- ggplot(data = dados_Forte)  + facet_wrap(~`Intensidade Dor` , nrow = 2) + geom_bar(mapping = aes(x = `A paciente teve dor nas costas em gravidezes anteriores?`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("%") + ylim(c(0,.8))  + xlab("") + theme(axis.text.x = element_text(angle = 15,hjust = 1))
+
+bar_doranterior <-grid.arrange(bar_doranterior_nada,bar_doranterior_Nadaqueincomode,bar_doranterior_Problematica,bar_doranterior_Forte, ncol = 2)
+```
+
+
+
+```{r preparacao dos dados para calcular proporcoes}
+#novos rotulos para não ficar duas linhas com o mesmo nome
+rotulos2 <- c("ID","Intensidade Dor","Mês da gravidez onde a dor começou","Idade da paciente","Altura da paciente (m)","Peso da paciente no início da gravidez (kg)","Peso no final da gravidez","Peso do bebê (kg)","Número de filhos anteriores à atual gravidez","A paciente teve dor nas costas em gravidezes anteriores?","Comprimidos e aspirina(a)","Bolsa de agua quente(a)","Banho quente(a)","Almofada atrás da cadeira(a)","Ficar em pé(a)","Estar sentada(a)","Estar deitada(a)","Caminhar(a)","Fadiga","Inclinar-se","Erguer-se","Arrumar camas","Lavar","Passar roupa","Uma ação intestinal","Relações sexuais","Tosser","Espirrar","Virar-se na cama","Ficar em pé","Estar sentada","Estar deitada","Caminhar")
+colnames(dados_base) <- rotulos2
+#dados com números (dados_nada estão como fatores)
+dados_Nada2 <- filter(dados_base, `Intensidade Dor` == 0)
+dados_Nadaqueincomode2 <- filter(dados_base, `Intensidade Dor` == 1)
+dados_Problematica2 <- filter(dados_base, `Intensidade Dor` == 2)
+dados_Forte2 <- filter(dados_base, `Intensidade Dor` == 3)
+```
+
+
+
+```{r preparacao dos dados alivia para calcular proporcoes}
+proporcao <- function(x){  return(c(soma = sum(x),n = length(x),p = sum(x)/length(x)))}
+
+tb_Forte_alivia <- apply(dados_Forte2[,11:18],2, proporcao)
+ordem_Forte_alivia <- order(tb_Forte_alivia[3,]) #ordem crescente dos p
+tb_Forte_ordem_alivia <- tb_Forte_alivia[,ordem_Forte_alivia]
+
+tb_Problematica_alivia <- apply(dados_Problematica2[,11:18],2, proporcao)
+tb_Problematica_alivia <- tb_Problematica_alivia[,ordem_Forte_alivia]
+
+tb_Nadaqueincomode_alivia <- apply(dados_Nadaqueincomode2[,11:18],2, proporcao)
+tb_Nadaqueincomode_alivia <- tb_Nadaqueincomode_alivia[,ordem_Forte_alivia]
+
+tabela_proporcao_alivia <- cbind(tb_Nadaqueincomode_alivia[3,],tb_Problematica_alivia[3,], tb_Forte_alivia[3,])
+colnames(tabela_proporcao_alivia) <- c("Nada que incomode","Problemática","Forte")
+#só para tirar o (a) dos nomes, agora não terá problema com repetições
+rownames(tabela_proporcao_alivia) <- c("Ficar em pé","Caminhar","Bolsa de agua quente","Estar sentada","Banho quente","Estar deitada","Comprimidos e aspirina","Almofada atrás da cadeira")
+```
+
+```{r preparacao dos dados agrava para calcular propocoes}
+tb_Forte_agrava <- apply(dados_Forte2[,19:33],2, proporcao)
+ordem_Forte_agrava <- order(tb_Forte_agrava[3,]) #ordem crescente dos p
+tb_Forte_ordem_agrava <- tb_Forte_agrava[,ordem_Forte_agrava]
+
+tb_Problematica_agrava <- apply(dados_Problematica2[,19:33],2, proporcao)
+tb_Problematica_agrava <- tb_Problematica_agrava[,ordem_Forte_agrava]
+
+tb_Nadaqueincomode_agrava <- apply(dados_Nadaqueincomode2[,19:33],2, proporcao)
+tb_Nadaqueincomode_agrava <- tb_Nadaqueincomode_agrava[,ordem_Forte_agrava]
+
+tabela_proporcao_agrava <- cbind(tb_Nadaqueincomode_agrava[3,],tb_Problematica_agrava[3,], tb_Forte_agrava[3,])
+colnames(tabela_proporcao_agrava) <- c("Nada que incomode","Problemática","Forte")
+```
+
+```{r preparacao dos dados agrava para treemaps}
+agrava <- melt(tabela_proporcao_agrava)
+agrava <- cbind(agrava)
+colnames(agrava) <- c("Pergunta","Intensidade dor","Proporção de sim")
+```
+
+```{r preparacao dos dados alivia para treemaps}
+alivia <- melt(tabela_proporcao_alivia)
+colnames(alivia) <- c("Pergunta","Intensidade dor","Proporção de sim")
+```
+
+
+```{r preparacao dos dados para calcular proporcoes totais}
+proptotal_agrava <- apply(dados_base[,19:33],2,function(x){return(sum(x)/length(x))})
+proptotal_agrava <- proptotal_agrava[ordem_Forte_agrava]
+p <-  as.character(agrava[1:length(proptotal_agrava),1])
+proptotal_agrava <- data.frame(cbind(proptotal_agrava,1))
+proptotal_agrava[,2] <- p
+colnames(proptotal_agrava) <- c("Proporção Total de sim","Pergunta")
+
+
+proptotal_alivia <-  apply(dados_base[,11:18],2,function(x){return(sum(x)/length(x))})
+
+proptotal_alivia <- proptotal_alivia[ordem_Forte_alivia]
+p <- as.character(alivia[1:length(proptotal_alivia),1])
+proptotal_alivia <- data.frame(cbind(as.double(proptotal_alivia),1))
+proptotal_alivia[,2] <- p
+colnames(proptotal_alivia) <- c("Proporção Total de sim","Pergunta")
+```
+
+
+# 5.Fatores que aliviam a dor
+
+```{r  fig.width = 4.5,fig.asp=1.618/2.5}
+#mapa de arvore
+
+#mapping = c(min(values), mean(range(values)), max(values))
+treemap_proptotal_alivia <- treemap(proptotal_alivia, #Your data frame object
+        index="Pergunta",  #A list of your categorical variables
+        vSize = "Proporção Total de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Proporção Total de sim",
+        #value = 1,
+        type= "value",#Type sets the organization and color scheme of your treemap
+        range = c(0,.35),
+        palette = gray.colors(8,start = 0.05,end = 1,gamma = .5),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 6,
+        title="Aliviam a dor em geral", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+#treemap_proptotal_alivia
+```
+
+# 5.Fatores que alivia a dor - "Nada que Incomode"
+
+```{r fig.width = 4.5,fig.asp=1.618/2.5}
+#mapa de arvore para cada nível de dor para alivia a dor nível nada que incomode
+alivia_nadaqueincomode <- filter(alivia, `Intensidade dor` == "Nada que incomode")
+
+
+treemap_alivia_nadaqueincomode <- treemap(alivia_nadaqueincomode, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.25),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 8,
+        title="Aliviam a dor para nível de dor 'Nada que incomode'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+#treemap_alivia_nadaqueincomode
+```
+
+# 5.Alivia - "Problemática"
+
+```{r fig.width = 4.5,fig.asp=1.618/2.5}
+#mapa de arvore para cada nível de dor para alivia a dor nível 'Problemática'
+alivia_problematica <- filter(alivia, `Intensidade dor` == "Problemática")
+
+
+treemap_alivia_problematica <- treemap(alivia_problematica, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.55),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 8,
+        title="Aliviam a dor para nível de dor 'Problemática'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+#treemap_alivia_problematica
+```
+
+# 5.Alivia - "Forte"
+
+```{r fig.width = 4.5,fig.asp=1.618/2.5}
+#mapa de arvore para cada nível de dor para alivia a dor nível 'Forte'
+alivia_forte <- filter(alivia, `Intensidade dor` == "Forte")
+
+
+treemap_alivia_forte <- treemap(alivia_forte, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.45),
+        palette = gray.colors(8,start = 0.00,end = 1,gamma = 1),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 8,
+        title="Aliviam a dor para nível de dor 'Forte'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+#treemap_alivia_forte
+```
+
+
+
+# 5.Agrava
+
+```{r fig.width = 4.5,fig.asp=1.618/2.5}
+treemap_proptotal_agrava <- treemap(proptotal_agrava, #Your data frame object
+        index="Pergunta",  #A list of your categorical variables
+        vSize = "Proporção Total de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Proporção Total de sim",
+        #value = 1,
+        type= "value",#Type sets the organization and color scheme of your treemap
+        range = c(0,.35),
+        palette = gray.colors(8,start = 0.05,end = 1,gamma = .5),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 6,
+        title="Agravam a dor em Geral", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+#treemap_proptotal_agrava
+```
+
+
+# 5.Agrava - "Nada que Incomode"
+
+```{r fig.width = 4.5,fig.asp=1.618/2.5}
+
+#mapa de arvore para cada nível de dor para agrava a dor nível nada que incomode
+
+agrava_nadaqueincomode <- filter(agrava, `Intensidade dor` == "Nada que incomode")
+
+
+treemap_agrava_nadaqueincomode <- treemap(agrava_nadaqueincomode, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.15),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 13,
+        title="Agravam a dor para nível de dor 'Nada que incomode'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+```
+
+# 5.Agrava - "Problemática"
+
+```{r fig.width = 4.5,fig.asp=1.618/2.5}
+#mapa de arvore para cada nível de dor para agrava a dor nível 'Problemática'
+agrava_problematica <- filter(agrava, `Intensidade dor` == "Problemática")
+
+
+treemap(agrava_problematica, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.45),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 13,
+        title="Agravam a dor para nível de dor 'Problemática'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+```
+
+# 5.Agrava - "Forte"
+
+```{r  fig.width = 4.5,fig.asp=1.618/2.5}
+#mapa de arvore para cada nível de dor para agrava a dor nível 'Forte'
+agrava_forte <- filter(agrava, `Intensidade dor` == "Forte")
+
+
+treemap(agrava_forte, #Your data frame object
+        index=c("Pergunta"),  #A list of your categorical variables
+        vSize = "Proporção de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Proporção de sim",
+        #value = 1,
+        type = "value",
+        #type= "categorical",#Type sets the organization and color scheme of your treemap
+        range = c(0,.45),
+        palette = gray.colors(8,start = 0.1,end = 1,gamma = 3),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 13,
+        title="Agravam a dor para nível de dor 'Forte'", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+```
+
+
+# 6.Conclusões
+
+- Idade
+- Altura
+- Peso no fim da gravidez
+- Mês de Início da dor
+- Número de filhos anteriores
+- Dor nas costas em gravidezes anteriores 
+
+
+# 7.Referências
+
+1 - Pregnancy-related low back pain
+P Katonis-A Kampouroglou-A Aggelopoulos-K Kakavelakis-S Lykoudis-A Makrigiannakis-K Alpantaki - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3306025/ (acesso em 29/06/2017)
+
+2 - Intrauterine exposure to mild analgesics is a risk factor for development of male reproductive disorders in human and rat
+David Kristensen-Ulla Hass-Laurianne Lesné-Grete Lottrup - https://academic.oup.com/humrep/article-lookup/doi/10.1093/humrep/deq323 (acesso em 29/06/2017)
+
+
+

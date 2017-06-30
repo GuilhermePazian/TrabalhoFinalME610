@@ -14,6 +14,8 @@ header-includes:
 - \usepackage{float}
 - \usepackage{subcaption}
 - \usepackage{multirow}
+- \usepackage{booktabs}
+- \usepackage{longtable}
 output:
   pdf_document:
   html_document: default
@@ -89,6 +91,7 @@ library(plyr) #utilizar apply
 library(dplyr) ##utilizar apply
 library(reshape2) #utilizar a função melt
 library(treemap) #graficos tipo treemap
+library(xtable) #usar a função para gerar tabelas latex
 ```
 
 ```{r reading the data,cache=TRUE}
@@ -101,36 +104,26 @@ colnames(dados_base) <- rotulos
 
 #1.Introdução
 
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
-UM PARÁGRAFO PARA INTRODUÇÃO AO PROBLEMA E MOTIVAÇÃO  
+A gravidez traz várias mudanças tanto físicas quanto hormonais ao corpo de uma mulher. No decorrer de uma gravidez ocorre um aumento de peso na mulher causado pelo crescimento do útero e do feto, os músculos abdominais começam a ficar mais fracos para acomodar o bebê e ocorre uma mudança do ponto de gravidade da mulher uma vez que sua anatomia muda. Coforme os meses avançam ocorre naturalmente a ação dos hormônios que provocam uma frouxidão dos ligamentos musculares preparando o corpo para o futuro parto. Todos estes aspectos acarretam uma mudança na postura da mulher o que acaba forçando nervos e a coluna, de maneira a provocar e/ou agravar dores nas costas.  
+
+Muitos estudos discutem sobre dor nas costas durante a gravidez, e a maior parte dos estudos estima que aproximadamente 50% das mulheres grávidas sofrem com dores nas costas e que um terço delas sofre com dores severas, reduzindo sua qualidade de vida[$^1$](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3306025/). 
+Sendo um problema muito comum, se é muito importante investigar e discutir sobre os fatores que estão associados à intensidade de dor nas costas durante a gravidez para que se possam propor métodos eficazes e simples para combater e/ou amenizar essas dores sem, de preferência, fazer uso medicamentoso, uma vez que mesmo medicamentos simples podem influênciar na saúde e no desenvolvimento do feto. O tempo e a duração de uso de analgésicos leves durante a gravidez por exemplo, já foram associados com o risco de criptorquia[$^2$](https://academic.oup.com/humrep/article-lookup/doi/10.1093/humrep/deq323), gerando homens com problemas de fertilidade na idade adulta.    
   
 Este trabalho está todo baseado nas informações obtidas pela investigação feita por Mantle, Greenwood e Currey, (1977) referente à dor nas costas durante a gravidez de 180 mulheres, cada mulher respondeu quanto às seguintes informações: Intensidade da dor nas costas (respostas alternativas: "Nada","Nada que chegue a incomodar","Problemática, mas não forte" ou "Forte"), Mês da gravidez onde a dor começou, Idade (em anos), Altura (em metros), Peso no início da gravidez (em kg), Peso no final da gravidez (em kg), Peso do bebê (em kg), Número de filhos anteriores à atual gravidez, Se teve dor nas costas em gravidezes anteriores? (respostas alternativas: Não aplicável, "Não", "Sim, suave" ou "Sim, forte"), Respostas dicotômicas ("Sim" ou "Não") para fatores que possivelmente aliviam a dor nas costas ("Comprimidos e aspirina","Bolsa de agua quente","Banho quente","Almofada atrás da cadeira","Ficar em pé","Estar sentada","Estar deitada","Caminhar") e para fatores que possivelmente agravam a dor nas costas ("Fadiga","Inclinar-se","Erguer-se","Arrumar camas","Lavar","Passar roupa","Uma ação intestinal","Relações sexuais","Tosser","Espirrar","Virar-se na cama","Ficar em pé","Estar sentada","Estar deitada","Caminhar").   
 
-O objetivo deste estudo é analisar os resultados do estudo citado, de maneira a resumir as informções presentes no estudo e identificar associações entre a intensidade da dor nas costas e as demais variáveis.  
+O objetivo deste estudo é analisar os resultados do estudo citado, de maneira a resumir as informções presentes nele e identificar associações entre a intensidade da dor nas costas e as demais variáveis.  
 
-A estrutura deste estudo segue da seguinte forma: 2.Validação dos dados, onde existe uma breve descrição de inconsistências encontradas na base de dados; 3.Análise Descritiva, que contém representações gráficas juntamente com suas respectivas legendas contendo algumas observações quanto às informações prestadas pela representação gráfica; Esta seção é dividida por tipos de gráfico apresentados; 4.Discussões, que contém as discussões quanto ao objetivo do estudo, de maneira a contextualizar as observações feitas na seção de Análise Descritiva;5.Referências, onde constam as referências do presente estudo e 6.Anexos que contém algumas tabelas e representações gráficas adicionais ao estudo.  
-
-#2.Validação do banco de dados
-
-Após uma analise prévia do banco de dados, observou-se uma inconsistência na base de dados, já que foi observado um valor para a variável relacionada à dor nas costas em gravidezes anteriores que não têm definição na descrição desta variável, portanto as observações com esta característica foram retiradas do banco de dados.
-
+A estrutura deste estudo segue as seguintes seções: 2.Validação dos dados, onde existe uma breve descrição de inconsistências encontradas na base de dados; 3.Análise Descritiva, que contém representações gráficas juntamente com suas respectivas legendas contendo algumas observações quanto às informações prestadas pela representação gráfica; Esta seção é dividida por tipos de gráfico apresentados; 4.Discussões, que contém as discussões quanto ao objetivo do estudo, de maneira a contextualizar as observações feitas na seção de Análise Descritiva;5.Referências, onde constam as referências do presente estudo e 6.Anexos que contém algumas tabelas e representações gráficas adicionais ao estudo.  
 
 ```{r insconsistencias}
-library(dplyr)
 #tirando inconsistências
 dados_base <- filter(dados_base, `A paciente teve dor nas costas em gravidezes anteriores?` != 0)
 ```
+
+#2.Validação do banco de dados
+
+Após uma analise prévia do banco de dados, observou-se uma inconsistência na base de dados, já que foi observado um valor para a variável relacionada à dor nas costas em gravidezes anteriores que não têm definição na descrição desta variável, portanto as observações com esta característica foram retiradas do banco de dados, restando assim `r nrow(dados_base)` observações no banco de dados.
+
 
 ```{r inteiro em fator}
 #fator
@@ -148,26 +141,44 @@ dados$`A paciente teve dor nas costas em gravidezes anteriores?` <- ordered(dado
 dados[,11:33] <- apply(dados[,11:33],2,function(x){factor(x,levels = c(0,1),labels = c("Não","Sim"))})
 
 ```
-\newpage
+
+```{r Preparacao dos dados para bar_plot}
+dados_Nada <- filter(dados, `Intensidade Dor` == "Nada")
+dados_Nadaqueincomode <- filter(dados, `Intensidade Dor` == "Nada que chegue a incomodar")
+dados_Problematica <- filter(dados, `Intensidade Dor` == "Problemática, mas não forte")
+dados_Forte <- filter(dados, `Intensidade Dor` == "Forte")
+
+```
+
+```{r tabela1}
+freq <- c(nrow(dados_Nada),nrow(dados_Nadaqueincomode),nrow(dados_Problematica),nrow(dados_Forte))
+names(freq) <- c("Nada","Nada que chegue a incomodar",
+"Problemática, mas não forte", "Forte")
+#freq
+```
+
 #3.Análise Descritiva
 
 
-BREVE DESCRIÇÃO O TIPO DE GRÁFICO PARA CADA VARIÁVEL E UMA TABELA COM A QUANTIDADE DE OBSERVAÇÕES PARA CADA GRUPO DE INTENSIDADE DE DOR NAS COSTAS.
-BREVE DESCRIÇÃO  
-BREVE DESCRIÇÃO  
-BREVE DESCRIÇÃO  
-BREVE DESCRIÇÃO  
-BREVE DESCRIÇÃO  
-BREVE DESCRIÇÃO  
-  
-TABELA  
-TABELA   
-TABELA  
-TABELA  
-TABELA  
-TABELA  
+Nesta seção são apresentados os gráficos objetivando identificar a presença ou não de associação entre a intensidade de dor nas costas durante a gravidez e as demais variáveis. Para comparações com variáveis contínuas são apresentados boxplots, para variáveis com mais de uma categoria são apresentados gráficos de barra e por fim, para as variáveis binárias são apresentados gráficos de árvore. 
+
+Para analisar os gráficos, deve-se levar em consideração a quantidade de mulheres que se enquadram em cada grupo de intensidade de dor nas costas. A tabela 1 apresenta tais quantidades.
+
+\begin{table}[H]
+\centering
+\caption{Tabela de frequências por grupo de intensidade de dor.}
+\label{my-label}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+           & \multirow{2}{*}{Nada} & \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Nada que chegue\\ a Incomodar\end{tabular}} & \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Problemática,\\ mas não forte\end{tabular}} & \multirow{2}{*}{Forte} \\
+           &                       &                                                                                        &                                                                                        &                        \\ \cmidrule(l){2-5} 
+Frequência & 4                     & 70                                                                                     & 55                                                                                     & 25                     \\ \bottomrule
+\end{tabular}
+\end{table}  
 
 ##3.1.Boxplots
+
+A representação gráfica em forma de boxplots visa permitir comparar as distribuições das variáveis contínuas para cada um dos grupos de intensidade de dor.  
 
 ```{r box_idade, fig.cap = legenda_box_idade,fig.width = 4.5,fig.asp=1.618/2.5}
 box_idade <- ggplot(data = dados,mapping = aes(x = `Intensidade Dor`, y=  `Idade da paciente`)) + geom_boxplot()  + theme_light() + theme(axis.text.x = element_text(angle = 15,hjust = 1,size = 10))
@@ -200,12 +211,8 @@ legenda_box_PesoBebe <- "Boxplot para Peso do Bebe por grupo de intensidade de d
 ```
 
 ##3.2.Gráficos de Barra
-```{r Preparacao dos dados para bar_plot}
-dados_Nada <- filter(dados, `Intensidade Dor` == "Nada")
-dados_Nadaqueincomode <- filter(dados, `Intensidade Dor` == "Nada que chegue a incomodar")
-dados_Problematica <- filter(dados, `Intensidade Dor` == "Problemática, mas não forte")
-dados_Forte <- filter(dados, `Intensidade Dor` == "Forte")
-```
+
+Os gráficos de barra visam permitir comparar o comportamento das variáveis categóricas em relação à cada grupo de intensidade de dor.  
 
 ```{r fig.cap = legenda_bar_mescomecou,fig.width = 8,fig.asp=1.618/5}
 bar_mescomecou_nada <- ggplot(data = dados_Nada)   + facet_wrap(~`Intensidade Dor` , nrow = 2) +  geom_bar(mapping = aes(x = `Mês da gravidez onde a dor começou`,y = (..count..)/sum(..count..))) + theme_minimal() + ylab("Prop. de casos") + ylim(c(0,1)) + xlab("Início da dor (Mês da gravidez)")
@@ -251,9 +258,7 @@ legenda_bar_doranterior <- "Gráfico de barras para dor em gravidezes anteriores 
 
 ##3.3.Mapas de árvore
 
-COLOCAR UMA DESCRIÇÃO DA REPRESENTAÇÃO GERAL DE MAPA DE ÁRVORE E RETIRAR ESSA DESCRIÇÃO DAS LEGENDAS  
-
-As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator alivia a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator alivia a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores.  
+As representações gráficas do tipo mapa de árvore visam permitir uma vizualização dos fatores que mais influênciam no alivio ou no agravamento da dor nas costas.
 
 ```{r preparacao dos dados para calcular proporcoes}
 #novos rotulos para não ficar duas linhas com o mesmo nome
@@ -351,30 +356,10 @@ treemap_proptotal_alivia <- treemap(proptotal_alivia, #Your data frame object
         fontsize.title = 12 #Change the font size of the title
         )
 #treemap_proptotal_alivia
-legenda_treemap_proptotal_alivia <- "Mapa de árvore para os fatores que possivelmente aliviam a dor nas costas durante a gravidez das pacientes. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator alivia a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator alivia a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores 'Almofada atrás da cadeira', 'Estar deitada' e 'Comprimidos e aspirina' ocupam a maior parte da área do gráfico, ou seja, a soma das proporções destes é maior do que a soma dos demais fatores que avaliados quanto a redução da dor nas costas."
+legenda_treemap_proptotal_alivia <- "Mapa de árvore para os fatores que possivelmente aliviam a dor nas costas durante a gravidez das pacientes. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator alivia a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator alivia a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores 'Almofada atrás da cadeira', 'Estar deitada' e 'Comprimidos e aspirina' ocupam a maior parte da área do gráfico, ou seja, a soma das proporções destes é maior do que a soma dos demais fatores que avaliados quanto a redução da dor nas costas. O fator 'caminhar' não é vizivel no gráfico"
 ```
 
-```{r fig.cap = legenda_treemap_proptotal_agrava, fig.width = 10,fig.asp=1.618/5}
-treemap_proptotal_agrava <- treemap(proptotal_agrava, #Your data frame object
-        index="Pergunta",  #A list of your categorical variables
-        vSize = "Proporção Total de sim",  #This is your quantitative variable
-        #type= "values",
-        vColor = "Proporção Total de sim",
-        #value = 1,
-        type= "value",#Type sets the organization and color scheme of your treemap
-        range = c(0,.35),
-        palette = gray.colors(8,start = 0.05,end = 1,gamma = .5),  #Select your color palette from the RColorBrewer presets or make your own. 
-        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
-        #type = "value",
-        #mapping = c(, 0, 0),
-        #range = c(0,1),
-        n = 6,
-        title="Mapa de Arvore para fatores que agravam a dor em Geral", #Customize your title
-        fontsize.title = 12 #Change the font size of the title
-        )
-#treemap_proptotal_agrava
-legenda_treemap_proptotal_agrava <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator agrava a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator agrava a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores com maior destaque são 'Ficar em pé' e 'Fadiga'. Por terem proporções muito pequenas, alguns fatores não estão bem visiveis no gráfico, estes fatores, ordenamos suas proporções decrescentemente, são 'Tosser','Espirrar', 'Relações sexuais' e 'Uma ação intestinal'"
-```
+
 
 ```{r fig.cap = legenda_treemap_alivia_nadaqueincomode, fig.width = 10,fig.asp=1.618/5}
 #mapa de arvore para cada nível de dor para alivia a dor nível nada que incomode
@@ -427,7 +412,7 @@ treemap_alivia_problematica <- treemap(alivia_problematica, #Your data frame obj
         fontsize.title = 12 #Change the font size of the title
         )
 #treemap_alivia_problematica
-legenda_treemap_alivia_problematica <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes para pacientes do grupo de intensidade de dro 'Nada que incomode'. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator alivia a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator alivia a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores 'Almofada atrás da cadeira', 'Estar deitada' e 'Estar deitada' ocupam a maior parte da área do gráfico, ou seja, a soma das proporções destes é maior do que a soma dos demais fatores que avaliados quanto a redução da dor nas costas para pacientes do grupo de intensidade de dor 'Problemática'."
+legenda_treemap_alivia_problematica <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes para pacientes do grupo de intensidade de dro 'Nada que incomode'. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator alivia a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator alivia a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores 'Almofada atrás da cadeira', 'Estar deitada' e 'Estar deitada' ocupam a maior parte da área do gráfico, ou seja, a soma das proporções destes é maior do que a soma dos demais fatores que avaliados quanto a redução da dor nas costas para pacientes do grupo de intensidade de dor 'Problemática'. O fator 'Caminhar' não é vizível no gráfico."
 ```
 
 ```{r fig.cap = legenda_treemap_alivia_forte, fig.width = 10,fig.asp=1.618/5}
@@ -457,6 +442,29 @@ treemap_alivia_forte <- treemap(alivia_forte, #Your data frame object
 legenda_treemap_alivia_forte <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes para pacientes do grupo de intensidade de dor 'Nada que incomode'. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator alivia a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator alivia a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores 'Estar sentada', 'Ficar em pé' e 'Comprimidos e aspirina' ocupam a maior parte da área do gráfico, ou seja, a soma das proporções destes é maior do que a soma dos demais fatores que avaliados quanto a redução da dor nas costas para pacientes do grupo de intensidade de dor 'Forte'."
 ```
 
+```{r fig.cap = legenda_treemap_proptotal_agrava, fig.width = 10,fig.asp=1.618/5}
+treemap_proptotal_agrava <- treemap(proptotal_agrava, #Your data frame object
+        index="Pergunta",  #A list of your categorical variables
+        vSize = "Proporção Total de sim",  #This is your quantitative variable
+        #type= "values",
+        vColor = "Proporção Total de sim",
+        #value = 1,
+        type= "value",#Type sets the organization and color scheme of your treemap
+        range = c(0,.35),
+        palette = gray.colors(8,start = 0.05,end = 1,gamma = .5),  #Select your color palette from the RColorBrewer presets or make your own. 
+        #palette = "#FFFFFF", # para ficar branco usei o comando "gray(1)"
+        #type = "value",
+        #mapping = c(, 0, 0),
+        #range = c(0,1),
+        n = 6,
+        title="Mapa de Arvore para fatores que agravam a dor em Geral", #Customize your title
+        fontsize.title = 12 #Change the font size of the title
+        )
+#treemap_proptotal_agrava
+legenda_treemap_proptotal_agrava <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator agrava a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator agrava a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores com maior destaque são 'Ficar em pé' e 'Fadiga'. Por terem proporções muito pequenas, alguns fatores não estão bem visiveis no gráfico, estes fatores, ordenamos suas proporções decrescentemente, são 'Tosser','Espirrar', 'Relações sexuais' e 'Uma ação intestinal'"
+```
+
+
 ```{r fig.cap = legenda_treemap_agrava_nadaqueincomode, fig.width = 10,fig.asp=1.618/5}
 
 #mapa de arvore para cada nível de dor para agrava a dor nível nada que incomode
@@ -483,7 +491,7 @@ treemap_agrava_nadaqueincomode <- treemap(agrava_nadaqueincomode, #Your data fra
         fontsize.title = 12 #Change the font size of the title
         )
 
-legenda_treemap_agrava_nadaqueincomode <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes para pacientes do grupo de intensidade de dor 'Nada que incomode'. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator alivia a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator alivia a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores 'Estar sentada', 'Fadiga', 'Ficar em pé', ' Inclinar-se', 'arrumar camas' e 'Passar roupa' ocupam a maior parte da área do gráfico, ou seja, a soma das proporções destes é maior do que a soma dos demais fatores avaliados quanto a redução da dor nas costas para pacientes do grupo de intensidade de dor 'Nada que incomode'. Por terem proporções muito pequenas, alguns fatores não estão bem visiveis no gráfico, estes fatores são 'Espirrar' e 'Relações sexuais' e têm mesmo valor de proporção."
+legenda_treemap_agrava_nadaqueincomode <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes para pacientes do grupo de intensidade de dor 'Nada que incomode'. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator alivia a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator alivia a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores 'Estar sentada', 'Fadiga', 'Ficar em pé', ' Inclinar-se', 'arrumar camas' e 'Passar roupa' ocupam a maior parte da área do gráfico, ou seja, a soma das proporções destes é maior do que a soma dos demais fatores avaliados quanto a redução da dor nas costas para pacientes do grupo de intensidade de dor 'Nada que incomode'. Por ter proporção muito pequena, o fator 'Relações sexuais' não está bem visivel no gráfico, porém este tem mesmo valor de proporção que 'Espirar'."
 ```
 
 ```{r fig.cap = legenda_treemap_agrava_problematica, fig.width = 10,fig.asp=1.618/5}
@@ -509,7 +517,7 @@ treemap(agrava_problematica, #Your data frame object
         title="Mapa de Arvore para fatores que agravam a dor para nível de dor 'Problemática'", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
-legenda_treemap_agrava_problematica <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes para pacientes do grupo de intensidade de dor 'Problemática'. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator agrava a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator agrava a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores 'Ficar em pé', 'Arrumar camas', 'Passar roupa' ocupam cerca de metade da área do gráfico, ou seja, a soma das proporções destes é aproximadamente o mesmo valor que a soma dos demais fatores avaliados quanto a redução da dor nas costas para pacientes do grupo de intensidade de dor 'Problemática'. Por ter proporção muito pequena e seu nome nome é grande, o fator 'Uma ação intestinal' não é bem visivel no gráfico, porém tem a mesma proporção do fator 'Espirrar'."
+legenda_treemap_agrava_problematica <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes para pacientes do grupo de intensidade de dor 'Problemática'. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator agrava a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator agrava a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores 'Ficar em pé', 'Arrumar camas', 'Passar roupa' ocupam cerca de metade da área do gráfico, ou seja, a soma das proporções destes é aproximadamente o mesmo valor que a soma dos demais fatores avaliados quanto a redução da dor nas costas para pacientes do grupo de intensidade de dor 'Problemática'. Por terem proporções muito pequenas, os fatores 'Uma ação intestinal' e 'Espirrar' não são bem visiveis no gráfico, e estes têm mesma proporção."
 ```
 
 ```{r fig.cap = legenda_treemap_agrava_forte, fig.width = 10,fig.asp=1.618/5}
@@ -538,21 +546,34 @@ treemap(agrava_forte, #Your data frame object
 legenda_treemap_agrava_forte <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes para pacientes do grupo de intensidade de dor 'Forte'. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator agrava a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator agrava a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de ajudar a ter uma dimensão em termos absolutos da proporção mensionada para os fatores. Note que os fatores 'Estar sentada', 'Ficar em pé', 'Uma ação intestinal','caminhar','Espirrar' e 'Estar deitada' ocupam a maior parte da área do gráfico, ou seja, a soma das proporções destes é maior do que a soma dos demais fatores que avaliados quanto a redução da dor nas costas para pacientes do grupo de intensidade de dor 'Forte'."
 ```
 
-\newpage
+
 #4.Discussões
 
+Para as discussões da análise descritiva, vamos considerar que o grupo de intensidade de dor "Nada" não passa informações muito úteis, uma vez que têm poucas observações (`r nrow(dados_Nada)`) e portanto não nos proporcionam informações que possibilitem possíveis generalizações de resultados para mulheres que não tem dor nas costas durante a gravidez, já que a distribuição desse grupo fica muito sucetível à variações amostrais. Adicionalmente, essa também é uma indicação de que os dados estudados não advem de uma amostra representativa de nenhuma população de interesse, portanto parece não ser possível fazer generalizações com as conclusões obtidas neste estudo para quaisquer populações.  Dessa forma poucas conclusões aqui serão feitas a partir da analise dos dados do grupo de dor "Nada".  
+
+Para os dados estudados, observamos por meio dos boxplots que as variáveis "Idade da paciente", "Altura da paciente" e "Peso fim da gravidez" são associadas com a intensidade de dor. Observa-se que para "Idade da paciente" (veja figura 1) as distribuições parecem ser diferentes para os grupos de intensidade de dor, um aumento no nível da dor parece estar associado à um aumento na idade da paciente (desconsiderando-se o grupo "Nada"), comportamento análogo é observado também para a variável "Peso fim da gravidez" (veja figura 4). A variável "Altura da paciente" (veja figura 2) parece ser bem diferente para o grupo de intensidade de dor "Forte", portanto tem associação com a intensidade de dor. As demais variáveis avaliadas a partir dos boxplots parecem não ter associação com a intensidade de dor (veja figuras 3 e 5).  
+
+Observamos, a partir dos gráficos de barra (veja figuras 6, 7 e 8) que as distribuições de frequências de todas as variáveis analisadas são bastante diferentes entre os grupos de intensidade de dor, portanto podemos concluir que estas variáveis estão associadas à intensidade de dor, ou seja, as variáveis "Início da dor (Mês da gravidez)","Número de filhos anteriores" e "Dor nas costas em gravidezes anteriores" estão associados à intensidade de dor nas costas.  
+
+Observando os mapas de árvores, podemos avaliar os fatores que possivelmente aliviam ou agravam a dor nas costas durante a gravidez.
+Vale resaltar que apesar dos fatores terem recebido a maioria das respostas como "não" (o que indica que o fator não teria associação com a intensidade de dor), é muito interessante estudar fatores que aliviam e agravam a dor mesmo que numa proporção pequena, pois se é possível fazer orientações para que as mulheres que têm dor nas costas durante a gravidez serem direcionadas para os fatores que devem ser evitados e os que devem ser testados para que se tenha um possível alívio da dor, melhorando assim a qualidade de vida das grávidas que venham a ter esses problemas.  Observe pela figura 9, que os fatores que se destacam com maiores proporções de respostas sim para o que alivia a dor são "Almofada atrás da cadeira", "Estar deitada" e "comprimidos e aspirina" em ordem decrescente para proporções, porém, observamos pela figura 12 que os fatores que mais se destacam em proporções de sim para o grupo de intensidade de dor "Forte" são "Estar sentada", "Ficar em pé" e "Comprimidos e aspirina" em ordem decrescente para as proporções de sim, desta maneira, temos um comportamento diferente das respostas para diferentes níveis de dor nas costas, portanto os fatores que possivelmente aliviam a dor nas costas estão associados à intensidade de dor nas costas (veja figuras 9, 10, 11 e 12 e tabela 2). 
+
+De maneira similar, os fatores que mais agravam a dor nas costas durante a gravidez são bem diferentes para cada nível de intensidade de dor (veja figuras 13, 14, 15 e 16 e tabela 2), portanto, os fatores que possivelmente agravam a dor nas costas estão associados à intensidade de dor nas costas.
 
 
 
-\newpage
 #5.Referências
 
-\newpage
+1 - Pregnancy-related low back pain
+P Katonis-A Kampouroglou-A Aggelopoulos-K Kakavelakis-S Lykoudis-A Makrigiannakis-K Alpantaki - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3306025/ (acesso em 29/06/2017)
+
+2 - Intrauterine exposure to mild analgesics is a risk factor for development of male reproductive disorders in human and rat
+David Kristensen-Ulla Hass-Laurianne Lesné-Grete Lottrup - https://academic.oup.com/humrep/article-lookup/doi/10.1093/humrep/deq323 (acesso em 29/06/2017)
+
+
+
 #6.Anexos
 
-COLOCAR UMA TABELA COM AS PROPORÇÕES, E CONTAGENS DE RESPOSTAS "SIM" PARA OS FATORES QUE AGRAVA E OUTRA PARA ALIVIA, PARA O TOTAL GERAL E TOTAL SEPARADO POR GRUPO DE INTENSIDADE DE DOR.  
-
-TABELAS DO TIPO "SUMMARY" PARA AS DEMAIS VARIÁVEIS, TANTO GERAL QUANTO POR GRUPO DE INTENSIDADE DE DOR.   
 
 ```{r fig.cap = legenda_treemap_alivia_geral,fig.width = 10,fig.asp=1.618/1.2}
 
@@ -580,7 +601,7 @@ treemap(alivia, #Your data frame object
         title="Mapa de Arvore para fatores que aliviam a dor por nível de dor", #Customize your title
         fontsize.title = 12 #Change the font size of the title
         )
-legenda_treemap_alivia_geral <- "Legende"
+legenda_treemap_alivia_geral <- "Mapa de árvore para os fatores que possivelmente aliviam a dor nas costas durante a gravidez das pacientes. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator alivia a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator alivia a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de diferenciar os grupos de intensidade de dor."
 ```
 
 ```{r fig.cap = legenda_treemap_agrava_geral,fig.width = 10,fig.asp=1.618/1.2}
@@ -607,5 +628,75 @@ treemap(agrava, #Your data frame object
         fontsize.title = 12 #Change the font size of the title
         )
 
-legenda_treemap_agrava_geral <- "Legende"
+legenda_treemap_agrava_geral <- "Mapa de árvore para os fatores que possivelmente agravam a dor nas costas durante a gravidez das pacientes. As áreas dos retângulos são proporcionais às proporções totais de pacientes que responderam que tal fator agrava a dor nas costas, ou seja, quanto maior for o retângulo respectivo ao fator (escrito dentro do retângulo), maior será a proporção de pacientes que diz que o fator agrava a dor nas costas comparado com os demais fatores. A escala de cor têm o objetivo de diferenciar os grupos de intensidade de dor."
 ```
+
+\begin{table}[H]
+\centering
+\caption{"Proporção de respostas sim -" representa a proporção de pacientes que responderam que o respectivo fator (à esquerda) agrava a dor nas costas durante a gravidez, "Proporção de respostas sim +" representa a proporção de pacientes que responderam que o respectivo fator (à esquerda) alivia a dor nas costas durante a gravidez}
+\label{my-label}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+\begin{tabular}[c]{@{}c@{}}Intensidade \\ da dor\end{tabular} & Fator  agrava?                                                  & \begin{tabular}[c]{@{}c@{}}Proporção de respostas \\ "Sim"\end{tabular} & Fator alivia?                                                        & \begin{tabular}[c]{@{}c@{}}Proporção de respostas \\ "Sim"\end{tabular} \\ \midrule
+\begin{tabular}[c]{@{}c@{}}Nada que \\ incomode\end{tabular}  & \begin{tabular}[c]{@{}c@{}}Uma ação\\   intestinal\end{tabular} & 0,0000                                                                  & Ficar em pé                                                          & 0,0286                                                                  \\
+                                                              & Espirrar                                                        & 0,0143                                                                  & Caminhar                                                             & 0,0286                                                                  \\
+                                                              & \begin{tabular}[c]{@{}c@{}}Relações \\ sexuais\end{tabular}     & 0,0143                                                                  & \begin{tabular}[c]{@{}c@{}}Bolsa de agua \\ quente\end{tabular}      & 0,0286                                                                  \\
+                                                              & Tosser                                                          & 0,0000                                                                  & Estar sentada                                                        & 0,0429                                                                  \\
+                                                              & Virar-se na cama                                                & 0,0571                                                                  & Banho quente                                                         & 0,0429                                                                  \\
+                                                              & Estar deitada                                                   & 0,0429                                                                  & Estar deitada                                                        & 0,1714                                                                  \\
+                                                              & Arrumar camas                                                   & 0,1143                                                                  & Comprimidos e aspirina                                               & 0,0857                                                                  \\
+                                                              & Lavar                                                           & 0,0286                                                                  & \begin{tabular}[c]{@{}c@{}}Almofada atrás \\ da cadeira\end{tabular} & 0,2143                                                                  \\
+                                                              & Erguer-se                                                       & 0,0286                                                                  &                                                                      &                                                                         \\
+                                                              & Inclinar-se                                                     & 0,1286                                                                  &                                                                      &                                                                         \\
+                                                              & Passar roupa                                                    & 0,1000                                                                  &                                                                      &                                                                         \\
+                                                              & Estar sentada                                                   & 0,1429                                                                  &                                                                      &                                                                         \\
+                                                              & Caminhar                                                        & 0,0857                                                                  &                                                                      &                                                                         \\
+                                                              & Fadiga                                                          & 0,1429                                                                  &                                                                      &                                                                         \\
+                                                              & Ficar em pé                                                     & 0,1286                                                                  &                                                                      &                                                                         \\ \midrule
+Problemática                                                  & \begin{tabular}[c]{@{}c@{}}Uma ação\\   intestinal\end{tabular} & 0,0182                                                                  & Ficar em pé                                                          & 0,0909                                                                  \\
+                                                              & Espirrar                                                        & 0,0182                                                                  & Caminhar                                                             & 0,0182                                                                  \\
+                                                              & \begin{tabular}[c]{@{}c@{}}Relações \\ sexuais\end{tabular}     & 0,0000                                                                  & \begin{tabular}[c]{@{}c@{}}Bolsa de agua \\ quente\end{tabular}      & 0,0727                                                                  \\
+                                                              & Tosser                                                          & 0,0364                                                                  & Estar sentada                                                        & 0,2000                                                                  \\
+                                                              & Virar-se na cama                                                & 0,0545                                                                  & Banho quente                                                         & 0,1091                                                                  \\
+                                                              & Estar deitada                                                   & 0,1091                                                                  & Estar deitada                                                        & 0,3455                                                                  \\
+                                                              & Arrumar camas                                                   & 0,3455                                                                  & Comprimidos e aspirina                                               & 0,1091                                                                  \\
+                                                              & Lavar                                                           & 0,0909                                                                  & \begin{tabular}[c]{@{}c@{}}Almofada atrás \\ da cadeira\end{tabular} & 0,5091                                                                  \\
+                                                              & Erguer-se                                                       & 0,2182                                                                  &                                                                      &                                                                         \\
+                                                              & Inclinar-se                                                     & 0,2000                                                                  &                                                                      &                                                                         \\
+                                                              & Passar roupa                                                    & 0,3455                                                                  &                                                                      &                                                                         \\
+                                                              & Estar sentada                                                   & 0,1636                                                                  &                                                                      &                                                                         \\
+                                                              & Caminhar                                                        & 0,1273                                                                  &                                                                      &                                                                         \\
+                                                              & Fadiga                                                          & 0,3091                                                                  &                                                                      &                                                                         \\
+                                                              & Ficar em pé                                                     & 0,4182                                                                  &                                                                      &                                                                         \\ \midrule
+\end{tabular}
+\end{table}
+
+###############
+
+
+
+\begin{table}[H]
+\centering
+\label{my-label}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+\begin{tabular}[c]{@{}c@{}}Intensidade \\ da dor\end{tabular} & Fator  agrava?                                                  & \begin{tabular}[c]{@{}c@{}}Proporção de respostas \\ "Sim"\end{tabular} & Fator alivia?                                                        & \begin{tabular}[c]{@{}c@{}}Proporção de respostas \\ "Sim"\end{tabular} \\ \midrule
+Forte                                                         & \begin{tabular}[c]{@{}c@{}}Uma ação\\   intestinal\end{tabular} & 0,4000                                                                  & Ficar em pé                                                          & 0,4000                                                                  \\
+                                                              & Espirrar                                                        & 0,2800                                                                  & Caminhar                                                             & 0,1200                                                                  \\
+                                                              & \begin{tabular}[c]{@{}c@{}}Relações \\ sexuais\end{tabular}     & 0,2400                                                                  & \begin{tabular}[c]{@{}c@{}}Bolsa de agua \\ quente\end{tabular}      & 0,1600                                                                  \\
+                                                              & Tosser                                                          & 0,2000                                                                  & Estar sentada                                                        & 0,4000                                                                  \\
+                                                              & Virar-se na cama                                                & 0,2000                                                                  & Banho quente                                                         & 0,0400                                                                  \\
+                                                              & Estar deitada                                                   & 0,2800                                                                  & Estar deitada                                                        & 0,1200                                                                  \\
+                                                              & Arrumar camas                                                   & 0,0000                                                                  & Comprimidos e aspirina                                               & 0,2000                                                                  \\
+                                                              & Lavar                                                           & 0,0400                                                                  & \begin{tabular}[c]{@{}c@{}}Almofada atrás \\ da cadeira\end{tabular} & 0,0800                                                                  \\
+                                                              & Erguer-se                                                       & 0,0400                                                                  &                                                                      &                                                                         \\
+                                                              & Inclinar-se                                                     & 0,0000                                                                  &                                                                      &                                                                         \\
+                                                              & Passar roupa                                                    & 0,0800                                                                  &                                                                      &                                                                         \\
+                                                              & Estar sentada                                                   & 0,4400                                                                  &                                                                      &                                                                         \\
+                                                              & Caminhar                                                        & 0,2800                                                                  &                                                                      &                                                                         \\
+                                                              & Fadiga                                                          & 0,1600                                                                  &                                                                      &                                                                         \\
+                                                              & Ficar em pé                                                     & 0,3200                                                                  &                                                                      &                                                                                        \\ \bottomrule
+\end{tabular}
+\end{table}             
+
+

@@ -1,0 +1,114 @@
+---
+title: ""
+geometry:  a4paper,left=3cm,right=2cm,top=3cm, bottom= 2cm
+lang: pt-br
+header-includes:
+- \usepackage{setspace}
+- \usepackage{indentfirst}
+- \usepackage[utf8]{inputenc}
+- \usepackage{mathptmx}
+- \usepackage{enumerate}
+- \usepackage{url} 
+- \usepackage{lipsum}
+- \usepackage{multicol}
+- \usepackage{float}
+- \usepackage{subcaption}
+- \usepackage{multirow}
+- \usepackage{booktabs}
+- \usepackage{longtable}
+output:
+  pdf_document:
+  html_document: default
+  fig_caption: yes
+  mainfont: Times New Roman
+fontsize: 11bp
+---
+
+\begin{titlepage}
+\begin{center}
+\thispagestyle{empty}
+\begin{figure}[!htb]
+\begin{center}
+\begin{minipage}[b]{0.5\linewidth}
+\begin{center}
+\end{center}
+\end{minipage}
+\begin{minipage}[b]{0.7\linewidth}
+\begin{center}
+\vspace*{1cm}
+ {\large \bf Universidade Estadual de Campinas\\[5pt]
+Instituto de Matemática, Estatística e Computação Cientifica\\[3pt]
+Departamento de Estatística}
+\end{center}
+\end{minipage}
+\end{center}
+\end{figure}
+\vspace*{\stretch{1}}
+\begin{center}
+\vspace*{5cm}
+{\huge \bf Dor nas costas durante a gravidez \\[7pt]
+Relatório\\[5pt]
+}
+\end{center}
+\vspace*{\stretch{1}}
+\begin{center}
+\vspace*{4cm}
+{\Large \bf Guilherme Pazian  RA:160323\break
+}\\[3pt]
+{\large \bf Professor: Mauricio Zevallos \\[5pt]
+ME610}\\[5pt]
+\end{center}
+\vspace*{\stretch{1}}
+\centerline{\bf Campinas-SP, 30 de Junho de 2017}
+\vspace*{\stretch{1}}
+\end{center}
+\end{titlepage}
+
+
+\setlength{\parindent}{3em}
+\setlength{\parskip}{1em}
+\onehalfspacing
+\newpage
+
+A gravidez traz várias mudanças tanto físicas quanto hormonais ao corpo de uma mulher. No decorrer de uma gravidez ocorre um aumento de peso na mulher causado pelo crescimento do útero e do feto, os músculos abdominais começam a ficar mais fracos para acomodar o bebê e ocorre uma mudança do ponto de gravidade da mulher uma vez que sua anatomia muda. Coforme os meses avançam ocorre naturalmente a ação dos hormônios que provocam uma frouxidão dos ligamentos musculares preparando o corpo para o futuro parto. Todos estes aspectos acarretam uma mudança na postura da mulher o que acaba forçando nervos e a coluna, de maneira a provocar e/ou agravar dores nas costas.  
+
+Muitos estudos discutem sobre dor nas costas durante a gravidez, e a maior parte dos estudos estima que aproximadamente 50% das mulheres grávidas sofrem com dores nas costas e que um terço delas sofre com dores severas, reduzindo sua qualidade de vida. 
+Sendo um problema muito comum, se é muito importante investigar e discutir sobre os fatores que estão associados à intensidade de dor nas costas durante a gravidez para que se possam propor métodos eficazes e simples para combater e/ou amenizar essas dores sem, de preferência, fazer uso medicamentoso, uma vez que mesmo medicamentos simples podem influênciar na saúde e no desenvolvimento do feto. O tempo e a duração de uso de analgésicos leves durante a gravidez por exemplo, já foram associados com o risco de criptorquia, gerando homens com problemas de fertilidade na idade adulta.    
+  
+Este trabalho está todo baseado nas informações obtidas pela investigação feita por Mantle, Greenwood e Currey, (1977) referente à dor nas costas durante a gravidez de 180 mulheres, cada mulher respondeu quanto às seguintes informações: Intensidade da dor nas costas (respostas alternativas: "Nada","Nada que chegue a incomodar","Problemática, mas não forte" ou "Forte"), Mês da gravidez onde a dor começou, Idade (em anos), Altura (em metros), Peso no início da gravidez (em kg), Peso no final da gravidez (em kg), Peso do bebê (em kg), Número de filhos anteriores à atual gravidez, Se teve dor nas costas em gravidezes anteriores? (respostas alternativas: Não aplicável, "Não", "Sim, suave" ou "Sim, forte"), Respostas dicotômicas ("Sim" ou "Não") para fatores que possivelmente aliviam a dor nas costas ("Comprimidos e aspirina","Bolsa de agua quente","Banho quente","Almofada atrás da cadeira","Ficar em pé","Estar sentada","Estar deitada","Caminhar") e para fatores que possivelmente agravam a dor nas costas ("Fadiga","Inclinar-se","Erguer-se","Arrumar camas","Lavar","Passar roupa","Uma ação intestinal","Relações sexuais","Tosser","Espirrar","Virar-se na cama","Ficar em pé","Estar sentada","Estar deitada","Caminhar").   
+
+O objetivo deste estudo é analisar os resultados do estudo citado, de maneira a resumir as informções presentes nele e identificar associações entre a intensidade da dor nas costas e as demais variáveis. 
+
+Para as discussões, baseou-se na análise descritiva feita, vamos considerar que o grupo de intensidade de dor "Nada" não passa informações muito úteis, uma vez que têm poucas observações (4) e portanto não nos proporcionam informações que possibilitem possíveis generalizações de resultados para mulheres que não tem dor nas costas durante a gravidez, já que a distribuição desse grupo fica muito sucetível à variações amostrais. Adicionalmente, essa também é uma indicação de que os dados estudados não advem de uma amostra representativa de nenhuma população de interesse, portanto parece não ser possível fazer generalizações com as conclusões obtidas neste estudo para quaisquer populações.  Dessa forma poucas conclusões aqui serão feitas a partir da analise dos dados do grupo de dor "Nada".  
+
+Para os dados estudados, concluimos por meio de análises de boxplots que as variáveis "Idade da paciente", "Altura da paciente" e "Peso fim da gravidez" são associadas com a intensidade de dor. Conclui-se que para "Idade da paciente" as distribuições parecem ser diferentes para os grupos de intensidade de dor, um aumento no nível da dor parece estar associado à um aumento na idade da paciente (desconsiderando-se o grupo "Nada"), comportamento análogo é observado também para a variável "Peso fim da gravidez". A variável "Altura da paciente" parece ser bem diferente para o grupo de intensidade de dor "Forte", portanto tem associação com a intensidade de dor. As demais variáveis avaliadas a partir dos boxplots parecem não ter associação com a intensidade de dor.  
+
+A estrutura deste estudo seguiu as seguintes etapas: 
+
+- Validação dos dados: onde observou-se uma inconsistência na base de dados, já que foi observado um valor para a variável relacionada à dor nas costas em gravidezes anteriores que não têm definição na descrição desta variável, portanto as observações com esta característica foram retiradas do banco de dados, restando assim 154 observações no banco de dados.  
+
+- Análise Descritiva: onde foram feitas representações gráficas objetivando identificar a presença ou não de associação entre a intensidade de dor nas costas durante a gravidez e as demais variáveis. Para comparações com variáveis contínuas foram analisados boxplots, para variáveis com mais de uma categoria foram analisados gráficos de barra e por fim, para as variáveis binárias foram analisados gráficos de árvore. 
+
+Para analisar os gráficos, levou-se em consideração a quantidade de mulheres que se enquadram em cada grupo de intensidade de dor nas costas. A tabela 1 apresenta tais quantidades.
+
+\begin{table}[H]
+\centering
+\caption{Tabela de frequências por grupo de intensidade de dor.}
+\label{my-label}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+           & \multirow{2}{*}{Nada} & \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Nada que chegue\\ a Incomodar\end{tabular}} & \multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Problemática,\\ mas não forte\end{tabular}} & \multirow{2}{*}{Forte} \\
+           &                       &                                                                                        &                                                                                        &                        \\ \cmidrule(l){2-5} 
+Frequência & 4                     & 70                                                                                     & 55                                                                                     & 25                     \\ \bottomrule
+\end{tabular}
+\end{table}  
+
+- Discussões: onde foram levantadas as discussões quanto ao objetivo do estudo, de maneira a contextualizar as conclusões obtidas a partir da Análise Descritiva;  
+
+Concluimos, a partir dos gráficos de barra que as distribuições de frequências de todas as variáveis analisadas são bastante diferentes entre os grupos de intensidade de dor, portanto podemos concluir que estas variáveis estão associadas à intensidade de dor, ou seja, as variáveis "Início da dor (Mês da gravidez)","Número de filhos anteriores" e "Dor nas costas em gravidezes anteriores" estão associados à intensidade de dor nas costas.  
+
+
+Apesar dos fatores que possivelmente aliviam ou agravam a dor nas costas durante a gravidez terem recebido a maioria das respostas como "não" (o que indica que o fator não teria associação com a intensidade de dor), é muito interessante estudar fatores que aliviam e agravam a dor mesmo que numa proporção pequena, pois se é possível fazer orientações para que as mulheres que têm dor nas costas durante a gravidez serem direcionadas para os fatores que devem ser evitados e os que devem ser testados para que se tenha um possível alívio da dor, melhorando assim a qualidade de vida das grávidas que venham a ter esses problemas.  
+Observamos a partir de gráficos do tipo mapa de arvore confeccionados a partir dos dados referentes aos fatores que aliviam a dor nas costas que, temos um comportamento diferente das respostas para diferentes níveis de dor nas costas, portanto os fatores que possivelmente aliviam a dor nas costas estão associados à intensidade de dor nas costas. 
+
+De maneira similar, os fatores que mais agravam a dor nas costas durante a gravidez são bem diferentes para cada nível de intensidade de dor, portanto, os fatores que possivelmente agravam a dor nas costas estão associados à intensidade de dor nas costas.
